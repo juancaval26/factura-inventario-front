@@ -7,6 +7,14 @@ import ListarGastos from './componentes/ListarGastos';
 import CrearInventario from './componentes/CrearInventario';
 import ListarInventario from './componentes/ListarInventario';
 import Inicio from './componentes/Inicio';
+import CrearProducto from './componentes/CrearProducto';
+import ListarProductos from './componentes/ListarProductos';
+import CrearDevolucion from './componentes/CrearDevolucion';
+import ListarDevoluciones from './componentes/ListarDevoluciones';
+import CrearFactura from './componentes/CrearFactura';
+import ListarFacturas from './componentes/ListarFacturas';
+import CrearEntrada from './componentes/CrearEntrada';
+import ListarEntradas from './componentes/ListarEntradas';
 
 function App() {
   return (
@@ -16,9 +24,18 @@ function App() {
           <Route  path="/crearcliente" element={<CrearCliente/>} />
           <Route  path="/listarclientes" element={<ListarClientes/>} />
           <Route  path="/creargasto" element={<CrearGasto/>} />
-          <Route  path="/listarGastos" element={<ListarGastos/>} />
-          <Route  path="/crearInventario" element={<CrearInventario/>} />
-          <Route  path="/listarInventario" element={<ListarInventario/>} />
+          <Route  path="/listargastos" element={<ListarGastos/>} />
+          <Route  path="/crearinventario" element={<CrearInventario/>} />
+          <Route  path="/listarinventario" element={<ListarInventario/>} />
+          <Route  path="/crearproducto" element={<CrearProducto/>} />
+          <Route  path="/listarproductos" element={<ListarProductos/>} />
+          <Route  path="/creardevolucion" element={<CrearDevolucion/>} />
+          <Route  path="/listardevoluciones" element={<ListarDevoluciones/>} />
+          <Route  path="/crearfactura" element={<CrearFactura/>} />
+          <Route  path="/listarfacturas" element={<ListarFacturas/>} />
+          <Route  path="/crearentrada" element={<CrearEntrada/>} />
+          <Route  path="/listarentradas" element={<ListarEntradas/>} />
+
 
       </Routes>
     </Router>

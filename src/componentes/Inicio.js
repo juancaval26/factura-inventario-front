@@ -57,11 +57,33 @@ function Inicio() {
                             </ul>
                         </li>
                         <li>
-                            <a href="#">Portfolio</a>
+                            <a href="#" onClick={() => handleSubMenuCollapse('devolucion')}>
+                                DEVOLUCIONES
+                            </a>
+                            <ul id="devolucion" className="collapse list-unstyled">
+                                <Link to='./creardevolucion'>Crear</Link>
+                                <Link to='./listardevoluciones'>Listar</Link>
+                            </ul>
                         </li>
                         <li>
-                            <a href="#">Contact</a>
+                            <a href="#" onClick={() => handleSubMenuCollapse('facturas')}>
+                                FACTURAS
+                            </a>
+                            <ul id="facturas" className="collapse list-unstyled">
+                                <Link to='./crearfactura'>Crear</Link>
+                                <Link to='./listarfacturas'>Listar</Link>
+                            </ul>
                         </li>
+                        <li>
+                            <a href="#" onClick={() => handleSubMenuCollapse('entradas')}>
+                                ENTRADAS
+                            </a>
+                            <ul id="entradas" className="collapse list-unstyled">
+                                <Link to='./crearentrada'>Crear</Link>
+                                <Link to='./listarentradas'>Listar</Link>
+                            </ul>
+                        </li>
+
                     </ul>
                 </div>
             </nav>
