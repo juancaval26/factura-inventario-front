@@ -36,7 +36,6 @@ function ListarDevoluciones() {
                             <td>{devolucion.venta.producto.nombre}</td>
                             <td>{devolucion.venta.producto.descripcion}</td>
                             <td>{devolucion.venta.factura.cliente.negocio}</td>
-
                         </tr>
                     ))}
                 </tbody>

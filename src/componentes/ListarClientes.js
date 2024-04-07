@@ -6,16 +6,28 @@ function ListarClientes() {
     const [clientes, setClientes] = useState([]);
     const [showModal, setShowModal] = useState(false);
     const [clienteEditado, setClienteEditado] = useState(null);
+    const [currentPage, setCurrentPage] = useState(1);
+    const [lastPage, setLastPage] = useState(1);
+    const [searchTerm, setSearchTerm] = useState('');
 
     useEffect(() => {
-        axios.get('http://localhost:8000/api/clientes')
-            .then(response => {
-                setClientes(response.data);
-            })
-            .catch(error => {
-                console.error('Error fetching data:', error);
-            });
-    }, []);
+        fetchClientes();
+    }, [currentPage, searchTerm]);
+
+    const fetchClientes = async () => {
+        try {
+            let url = `http://localhost:8000/api/clientes?page=${currentPage}`;
+            if (searchTerm) {
+                url = `http://localhost:8000/api/clientes/buscar?nombre=${searchTerm}`;
+            }
+            const response = await axios.get(url);
+            setClientes(response.data.data);
+            setLastPage(response.data.last_page);
+        } catch (error) {
+            console.error('Error fetching data:', error);
+        }
+    };
+
 
     const handleOpenModal = (cliente) => {
         setClienteEditado(cliente);
@@ -29,19 +41,65 @@ function ListarClientes() {
             console.log('Cambios guardados exitosamente.');
 
             // Actualizar datos locales después de guardar cambios
-            const response = await axios.get('http://localhost:8000/api/clientes');
-            setClientes(response.data);
+            fetchClientes();
         } catch (error) {
             console.error('Error al guardar cambios:', error);
         }
     };
 
+    const handleSearch = () => {
+        setCurrentPage(1); // Reset page number when performing a new search
+        fetchClientes();
+    };
+
+    const handlePageChange = (page) => {
+        setCurrentPage(page);
+    };
+
+    const handleNextPage = () => {
+        setCurrentPage(currentPage + 1);
+    };
+
+    const handlePrevPage = () => {
+        setCurrentPage(currentPage - 1);
+    };
+
+    const renderPaginationButtons = () => {
+        const buttons = [];
+        buttons.push(
+            <Button key="prev" variant="secondary" disabled={currentPage === 1} onClick={handlePrevPage}>
+                Anterior
+            </Button>
+        );
+        for (let i = 1; i <= lastPage; i++) {
+            buttons.push(
+                <Button key={i} variant={currentPage === i ? 'primary' : 'secondary'} onClick={() => handlePageChange(i)}>
+                    {i}
+                </Button>
+            );
+        }
+        buttons.push(
+            <Button key="next" style={{ margin: '5px' }} variant="secondary" disabled={currentPage === lastPage} onClick={handleNextPage}>
+                Siguiente
+            </Button>
+        );
+        return buttons;
+    };
+
+
     return (
         <div>
-            <h1>Clientes</h1>
+            <h1>Clientes: {renderPaginationButtons()}
+
+                <div style={{ marginBottom: '10px' }}>
+                    <input type="text" value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} placeholder="Buscar cliente por nombre, NIT o negocio" />
+                    <Button variant="primary" onClick={handleSearch}>Buscar</Button>
+                </div>
+            </h1>
             <Table bordered hover>
                 <thead>
                     <tr>
+                        <th>Nom.Contacto</th>
                         <th>Negocio</th>
                         <th>Dirección</th>
                         <th>Teléfono</th>
@@ -52,8 +110,9 @@ function ListarClientes() {
                     </tr>
                 </thead>
                 <tbody>
-                    {clientes.map(cliente => (
+                    {clientes && clientes.map(cliente => (
                         <tr key={cliente.id}>
+                            <td>{cliente.nombre}</td>
                             <td>{cliente.negocio}</td>
                             <td>{cliente.direccion}</td>
                             <td>{cliente.telefono}</td>
@@ -74,6 +133,10 @@ function ListarClientes() {
                 <Modal.Body>
                     {clienteEditado && (
                         <Form>
+                            <Form.Group controlId="formNombre">
+                                <Form.Label>Nombre</Form.Label>
+                                <Form.Control type="text" placeholder="Nombre" value={clienteEditado.nombre} onChange={(e) => setClienteEditado({ ...clienteEditado, nombre: e.target.value })} />
+                            </Form.Group>
                             <Form.Group controlId="formNegocio">
                                 <Form.Label>Negocio</Form.Label>
                                 <Form.Control type="text" placeholder="Negocio" value={clienteEditado.negocio} onChange={(e) => setClienteEditado({ ...clienteEditado, negocio: e.target.value })} />
@@ -95,13 +158,12 @@ function ListarClientes() {
                                 <Form.Control type="text" placeholder="Estado" value={clienteEditado.estado} onChange={(e) => setClienteEditado({ ...clienteEditado, estado: e.target.value })} />
                             </Form.Group>
                             <Form.Group controlId="formCorreo">
-                                <Form.Label>Correo Electrónico</Form.Label>
-                                <Form.Control type="email" placeholder="Correo Electrónico" value={clienteEditado.correo} onChange={(e) => setClienteEditado({ ...clienteEditado, correo: e.target.value })} />
+                                <Form.Label>Correo</Form.Label>
+                                <Form.Control type="email" placeholder="Correo" value={clienteEditado.correo} onChange={(e) => setClienteEditado({ ...clienteEditado, correo: e.target.value })} />
                             </Form.Group>
                         </Form>
                     )}
                 </Modal.Body>
-
                 <Modal.Footer>
                     <Button variant="secondary" onClick={() => setShowModal(false)}>
                         Cancelar

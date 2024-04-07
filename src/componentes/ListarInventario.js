@@ -43,18 +43,16 @@ function ListarInventario() {
                 <thead>
                     <tr>
                         <th>Código</th>
-                        <th>Producto</th>
+                        <th>Nom.Producto</th>
                         <th>Stock</th>
-                        <th>Precio Unitario</th>
                     </tr>
                 </thead>
                 <tbody>
                     {inventario.map(inventario => (
                         <tr key={inventario.id}>
                             <td>{inventario.codigo}</td>
-                            <td>{inventario.producto}</td>
+                            <td>{inventario.producto.nombre}</td>
                             <td>{inventario.stock}</td>
-                            <td>{inventario.precioUnitario}</td>
                             <td>
                                 <Button variant="primary" onClick={() => handleOpenModal(inventario)}>Editar</Button>
                             </td>
@@ -71,19 +69,11 @@ function ListarInventario() {
                         <Form>
                             <Form.Group controlId="formCodigo">
                                 <Form.Label>Código</Form.Label>
-                                <Form.Control type="number" value={inventarioEditado.codigo} onChange={(e) => setinventarioEditado({ ...inventarioEditado, codigo: e.target.value })} />
-                            </Form.Group>
-                            <Form.Group controlId="formProducto">
-                                <Form.Label>Producto</Form.Label>
-                                <Form.Control type="text" placeholder="producto" value={inventarioEditado.producto} onChange={(e) => setinventarioEditado({ ...inventarioEditado, producto: e.target.value })} />
+                                <Form.Control type="text" value={inventarioEditado.codigo} onChange={(e) => setinventarioEditado({ ...inventarioEditado, codigo: e.target.value })} />
                             </Form.Group>
                             <Form.Group controlId="formStock">
                                 <Form.Label>Stock</Form.Label>
                                 <Form.Control type="number" value={inventarioEditado.stock} onChange={(e) => setinventarioEditado({ ...inventarioEditado, stock: e.target.value })} />
-                            </Form.Group>
-                            <Form.Group controlId="formUnitario">
-                                <Form.Label>Precio Unitario</Form.Label>
-                                <Form.Control type="text" value={inventarioEditado.precioUnitario} onChange={(e) => setinventarioEditado({ ...inventarioEditado, precioUnitario: e.target.value })} />
                             </Form.Group>
                         </Form>
                     )}

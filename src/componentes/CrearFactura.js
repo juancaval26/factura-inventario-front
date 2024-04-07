@@ -95,7 +95,7 @@ function CrearFactura() {
             {successMessage && <Alert variant="success">{successMessage}</Alert>}
             {clientesEncontrados.length === 0 && buscarCliente.trim() !== '' && <Alert variant="warning">No se encontraron clientes con el negocio o NIT {buscarCliente}</Alert>}
             <Form.Group controlId="id_cliente">
-                <Form.Label>Negocio o NIT del Cliente</Form.Label>
+                <Form.Label>Nom.Negocio/NIT Cliente</Form.Label>
                 <div className="input-group">
                     <Form.Control type="text" name="id_cliente" value={buscarCliente} onChange={handleChangeCliente} placeholder="Negocio o NIT del Cliente" />
                 </div>

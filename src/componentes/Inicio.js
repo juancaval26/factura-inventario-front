@@ -4,22 +4,63 @@ import { faBars } from '@fortawesome/free-solid-svg-icons';
 import 'font-awesome/css/font-awesome.min.css';
 import $ from 'jquery';
 import { Link } from 'react-router-dom';
+import CrearCliente from './CrearCliente';
+import CrearDevolucion from './CrearDevolucion';
+import CrearEntrada from './CrearEntrada';
+import CrearFactura from './CrearFactura';
+import CrearGasto from './CrearGasto';
+import CrearInventario from './CrearInventario';
+import CrearProducto from './CrearProducto';
+import CrearSalida from './CrearSalida';
+import Crearventa from './CrearVenta';
+import ListarClientes from './ListarClientes';
+import ListarDevoluciones from './ListarDevoluciones';
+import ListarEntradas from './ListarEntradas';
+import ListarFacturas from './ListarFacturas';
+import ListarGastos from './ListarGastos';
+import ListarInventario from './ListarInventario';
+import ListarProductos from './ListarProductos';
+import Listarsalidas from './ListarSalida';
+import Listarventas from './ListarVentas';
 
 function Inicio() {
     const [sidebarOpen, setSidebarOpen] = useState(false);
+    const [activeComponent, setActiveComponent] = useState(null);
 
     const toggleSidebar = () => {
         setSidebarOpen(!sidebarOpen);
     };
 
-    // Función para manejar el colapso del menú lateral
-    const handleSidebarCollapse = () => {
-        $('#sidebar').toggleClass('active');
-    };
-
     // Función para manejar el colapso de los submenús
     const handleSubMenuCollapse = (id) => {
         $(`#${id}`).toggleClass('collapse');
+    };
+
+    // Función para manejar la selección del componente a mostrar
+    const handleComponentSelection = (component) => {
+        setActiveComponent(component);
+    };
+
+    // Mapa de nombres de componentes a sus componentes correspondientes
+    const componentMap = {
+        'crearCliente': <CrearCliente />,
+        'crearDevolucion': <CrearDevolucion />,
+        'crearEntrada': <CrearEntrada />,
+        'crearFactura': <CrearFactura />,
+        'crearGasto': <CrearGasto />,
+        'crearInventario': <CrearInventario />,
+        'crearProducto': <CrearProducto />,
+        'crearSalida': <CrearSalida />,
+        'crearVenta': <Crearventa />,
+        'listarClientes': <ListarClientes />,
+        'listarDevoluciones': <ListarDevoluciones />,
+        'listarEntradas': <ListarEntradas />,
+        'listarFacturas': <ListarFacturas />,
+        'listarGastos': <ListarGastos />,
+        'listarInventario': <ListarInventario />,
+        'listarProductos': <ListarProductos />,
+        'listarSalidas': <Listarsalidas />,
+        'listarVentas': <Listarventas />,
     };
 
     return (
@@ -28,32 +69,39 @@ function Inicio() {
                 <div className="p-4 pt-5">
                     <ul className="list-unstyled components mb-5">
                         <li className="active">
-                            <a href="#homeSubmenu" onClick={() => handleSubMenuCollapse('homeSubmenu')}>
+                            <a href="#" onClick={() => handleSubMenuCollapse('clientes')}>
                                 CLIENTES
                             </a>
-                            <ul id="homeSubmenu" className="collapse list-unstyled">
-                                <Link to='./crearcliente'>Crear</Link>
-                                <Link to='./listarclientes'>Listar</Link>
-                                {/* <li><a href="#">Home 2</a></li>
-                                <li><a href="#">Home 3</a></li> */}
+                            <ul id="clientes" className="collapse list-unstyled">
+                                <Link onClick={() => handleComponentSelection('crearCliente')}>Crear</Link>
+                                <Link onClick={() => handleComponentSelection('listarClientes')}>Listar</Link>
+                            </ul>
+                        </li>
+                        <li className="active">
+                            <a href="#" onClick={() => handleSubMenuCollapse('productos')}>
+                                PRODUCTOS
+                            </a>
+                            <ul id="productos" className="collapse list-unstyled">
+                                <Link onClick={() => handleComponentSelection('crearProducto')}>Crear</Link>
+                                <Link onClick={() => handleComponentSelection('listarProductos')}>Listar</Link>
                             </ul>
                         </li>
                         <li>
-                            <a href="#" onClick={() => handleSubMenuCollapse('aboutSubmenu')}>
+                            <a href="#" onClick={() => handleSubMenuCollapse('gastos')}>
                                 GASTOS
                             </a>
-                            <ul id="aboutSubmenu" className="collapse list-unstyled">
-                                <Link to='./creargasto'>Crear</Link>
-                                <Link to='./listarGastos'>Listar</Link>
+                            <ul id="gastos" className="collapse list-unstyled">
+                                <Link onClick={() => handleComponentSelection('crearGastos')}>Crear</Link>
+                                <Link onClick={() => handleComponentSelection('listarGastos')}>Listar</Link>
                             </ul>
                         </li>
                         <li>
-                            <a href="#" onClick={() => handleSubMenuCollapse('pageSubmenu')}>
+                            <a href="#" onClick={() => handleSubMenuCollapse('inventario')}>
                                 INVENTARIO
                             </a>
-                            <ul id="pageSubmenu" className="collapse list-unstyled">
-                                <Link to='./crearInventario'>Crear</Link>
-                                <Link to='./listarInventario'>Listar</Link>
+                            <ul id="inventario" className="collapse list-unstyled">
+                                <Link onClick={() => handleComponentSelection('crearInventario')}>Crear</Link>
+                                <Link onClick={() => handleComponentSelection('listarInventario')}>Listar</Link>
                             </ul>
                         </li>
                         <li>
@@ -61,8 +109,8 @@ function Inicio() {
                                 DEVOLUCIONES
                             </a>
                             <ul id="devolucion" className="collapse list-unstyled">
-                                <Link to='./creardevolucion'>Crear</Link>
-                                <Link to='./listardevoluciones'>Listar</Link>
+                                <Link onClick={() => handleComponentSelection('crearDevolucion')}>Crear</Link>
+                                <Link onClick={() => handleComponentSelection('listarDevoluciones')}>Listar</Link>
                             </ul>
                         </li>
                         <li>
@@ -70,8 +118,17 @@ function Inicio() {
                                 FACTURAS
                             </a>
                             <ul id="facturas" className="collapse list-unstyled">
-                                <Link to='./crearfactura'>Crear</Link>
-                                <Link to='./listarfacturas'>Listar</Link>
+                                <Link onClick={() => handleComponentSelection('crearFactura')}>Crear</Link>
+                                <Link onClick={() => handleComponentSelection('listarFacturas')}>Listar</Link>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="#" onClick={() => handleSubMenuCollapse('ventas')}>
+                                VENTAS
+                            </a>
+                            <ul id="ventas" className="collapse list-unstyled">
+                                <Link onClick={() => handleComponentSelection('crearVenta')}>Crear</Link>
+                                <Link onClick={() => handleComponentSelection('listarVentas')}>Listar</Link>
                             </ul>
                         </li>
                         <li>
@@ -79,11 +136,19 @@ function Inicio() {
                                 ENTRADAS
                             </a>
                             <ul id="entradas" className="collapse list-unstyled">
-                                <Link to='./crearentrada'>Crear</Link>
-                                <Link to='./listarentradas'>Listar</Link>
+                                <Link onClick={() => handleComponentSelection('crearEntrada')}>Crear</Link>
+                                <Link onClick={() => handleComponentSelection('listarEntradas')}>Listar</Link>
                             </ul>
                         </li>
-
+                        <li>
+                            <a href="#" onClick={() => handleSubMenuCollapse('salidas')}>
+                                SALIDAS
+                            </a>
+                            <ul id="salidas" className="collapse list-unstyled">
+                                <Link onClick={() => handleComponentSelection('crearSalida')}>Crear</Link>
+                                <Link onClick={() => handleComponentSelection('listarSalidas')}>Listar</Link>
+                            </ul>
+                        </li>
                     </ul>
                 </div>
             </nav>
@@ -93,11 +158,9 @@ function Inicio() {
                     <div className="container-fluid">
                         <button type="button" id="sidebarCollapse" className="btn btn-primary" onClick={toggleSidebar}>
                             <FontAwesomeIcon icon={faBars} />
-                            <span className="sr-only">Toggle Menu</span>
                         </button>
                         <a className="navbar-brand" href="#">
-                            <img src="logo.png" alt="Logo" width="30" height="30" className="d-inline-block align-top" />
-                            React App
+                            <img src="" alt="ke-rico" width="" height="30" className="d-inline-block align-top" />
                         </a>
                         <div className="collapse navbar-collapse" id="navbarSupportedContent">
                             <ul className="navbar-nav ml-auto mb-2 mb-lg-0">
@@ -111,6 +174,11 @@ function Inicio() {
                         </div>
                     </div>
                 </nav>
+            <div id="componente">
+                {activeComponent && componentMap[activeComponent]}
+
+            </div>
+                
             </div>
         </div>
     );
