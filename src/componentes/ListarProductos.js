@@ -46,7 +46,6 @@ function ListarProductos() {
                         <th>Descripción</th>
                         <th>Peso</th>
                         <th>Fecha</th>
-                        <th>Precio</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -56,7 +55,6 @@ function ListarProductos() {
                             <td>{producto.descripcion}</td>
                             <td>{producto.peso}</td>
                             <td>{producto.fecha}</td>
-                            <td>{producto.precio}</td>
                             <td>
                                 <Button variant="primary" onClick={() => handleOpenModal(producto)}>Editar</Button>
                             </td>
@@ -81,15 +79,11 @@ function ListarProductos() {
                             </Form.Group>
                             <Form.Group controlId="formPeso">
                                 <Form.Label>Peso</Form.Label>
-                                <Form.Control type="number" placeholder="Peso" value={productoEditado.peso} onChange={(e) => setProductoEditado({ ...productoEditado, peso: e.target.value })} />
+                                <Form.Control type="text" placeholder="Peso" value={productoEditado.peso} onChange={(e) => setProductoEditado({ ...productoEditado, peso: e.target.value })} />
                             </Form.Group>
                             <Form.Group controlId="formFecha">
                                 <Form.Label>Fecha</Form.Label>
                                 <Form.Control type="date" placeholder="Fecha" value={productoEditado.fecha} onChange={(e) => setProductoEditado({ ...productoEditado, fecha: e.target.value })} />
-                            </Form.Group>
-                            <Form.Group controlId="formPrecio">
-                                <Form.Label>Precio</Form.Label>
-                                <Form.Control type="number" placeholder="Precio" value={productoEditado.precio} onChange={(e) => setProductoEditado({ ...productoEditado, precio: e.target.value })} />
                             </Form.Group>
                         </Form>
                     )}

@@ -5,7 +5,7 @@ import axios from 'axios';
 function CrearInventario() {
     const [successMessage, setSuccessMessage] = useState(null);
     const [datosInventario, setdatosInventario] = useState({
-        codigo: 0, producto: '', stock: 0, precioUnitario: 0
+        codigo: 0, id_producto: '', stock: 0
     });
 
     const handleChange = e => {
@@ -24,7 +24,7 @@ function CrearInventario() {
             setSuccessMessage('Inventario creado con éxito'); // Establecer el mensaje de éxito
             // Limpiar los campos después de la creación exitosa
             setdatosInventario({
-                codigo: 0, producto: '', stock: 0, precioUnitario: 0
+                codigo: 0, id_producto: '', stock: 0, precioUnitario: 0
             });
         } catch (error) {
             console.error('Error al crear Inventario:', error);
@@ -48,11 +48,6 @@ function CrearInventario() {
             <Form.Group controlId="stock">
                 <Form.Label>Stock</Form.Label>
                 <Form.Control type="text" name="stock" value={datosInventario.stock} onChange={handleChange}/>
-            </Form.Group>
-
-            <Form.Group controlId="precioUnitario">
-                <Form.Label>Precio Unitario</Form.Label>
-                <Form.Control type="text" name="precioUnitario" value={datosInventario.precioUnitario} onChange={handleChange} />
             </Form.Group>
 
             <Button variant="primary" type="submit">

@@ -9,7 +9,6 @@ function CrearProducto() {
         descripcion: '',
         peso: 0,
         fecha: '',
-        precio: 0
     });
 
     const handleChange = e => {
@@ -30,7 +29,6 @@ function CrearProducto() {
                 descripcion: '',
                 peso: 0,
                 fecha: '',
-                precio: 0
             });
         } catch (error) {
             console.error('Error al crear Producto:', error);
@@ -53,17 +51,12 @@ function CrearProducto() {
 
             <Form.Group controlId="peso">
                 <Form.Label>Peso</Form.Label>
-                <Form.Control type="number" name="peso" value={productoData.peso} onChange={handleChange} placeholder="Peso" />
+                <Form.Control type="texto" name="peso" value={productoData.peso} onChange={handleChange} placeholder="Peso" />
             </Form.Group>
 
             <Form.Group controlId="fecha">
-                <Form.Label>Fecha</Form.Label>
+                <Form.Label>Fecha Ingreso</Form.Label>
                 <Form.Control type="date" name="fecha" value={productoData.fecha} onChange={handleChange} placeholder="Fecha" />
-            </Form.Group>
-
-            <Form.Group controlId="precio">
-                <Form.Label>Precio</Form.Label>
-                <Form.Control type="number" name="precio" value={productoData.precio} onChange={handleChange} placeholder="Precio" />
             </Form.Group>
 
             <Button variant="primary" type="submit">

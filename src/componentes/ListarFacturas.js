@@ -54,7 +54,7 @@ function ListarFacturas({ id_cliente, codigo, fecha }) {
                 <tbody>
                     {facturas.map(factura => (
                         <tr key={factura.id}>
-                            <td>{factura.cliente.negocio}</td>
+                            <td>{factura.cliente.nombre}</td>
                             <td>{factura.codigo}</td>
                             <td>{factura.fecha}</td>
                             <td>
@@ -73,7 +73,7 @@ function ListarFacturas({ id_cliente, codigo, fecha }) {
                         <Form>
                             <Form.Group controlId="formIdCliente">
                                 <Form.Label>Nombre Cliente</Form.Label>
-                                <Form.Control type="text" placeholder="Nombre Cliente" value={facturaEditada.cliente.negocio} onChange={(e) => setFacturaEditada({ ...facturaEditada, id_cliente: e.target.value })} />
+                                <Form.Control type="text" placeholder="Nombre Cliente" value={facturaEditada.cliente.nombre} onChange={(e) => setFacturaEditada({ ...facturaEditada, id_cliente: e.target.value })} />
                             </Form.Group>
                             <Form.Group controlId="formCodigo">
                                 <Form.Label>Código</Form.Label>
