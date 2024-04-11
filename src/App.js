@@ -11,14 +11,12 @@ import CrearProducto from './componentes/CrearProducto';
 import ListarProductos from './componentes/ListarProductos';
 import CrearDevolucion from './componentes/CrearDevolucion';
 import ListarDevoluciones from './componentes/ListarDevoluciones';
-import CrearFactura from './componentes/CrearFactura';
-import ListarFacturas from './componentes/ListarFacturas';
 import CrearEntrada from './componentes/CrearEntrada';
 import ListarEntradas from './componentes/ListarEntradas';
-import CrearSalida from './componentes/CrearSalida';
 import ListarSalida from './componentes/ListarSalida';
 import CrearVenta from './componentes/CrearVenta';
 import ListarVentas from './componentes/ListarVentas';
+import GenerarPagos from './componentes/GenerarPagos';
 
 function App() {
   return (
@@ -35,16 +33,12 @@ function App() {
           <Route  path="/listarproductos" element={<ListarProductos/>} />
           <Route  path="/creardevolucion" element={<CrearDevolucion/>} />
           <Route  path="/listardevoluciones" element={<ListarDevoluciones/>} />
-          <Route  path="/crearfactura" element={<CrearFactura/>} />
-          <Route  path="/listarfacturas" element={<ListarFacturas/>} />
           <Route  path="/crearentrada" element={<CrearEntrada/>} />
           <Route  path="/listarentradas" element={<ListarEntradas/>} />
-          <Route  path="/crearsalida" element={<CrearSalida/>} />
           <Route  path="/listarsalidas" element={<ListarSalida/>} />
           <Route  path="/crearventa" element={<CrearVenta/>} />
           <Route  path="/listarventas" element={<ListarVentas/>} />
-
-
+          <Route  path="/generarpagos" element={<GenerarPagos/>} />
       </Routes>
     </Router>
   );

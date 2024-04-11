@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
-import { Form, Button, Alert } from 'react-bootstrap';
+import { Form, Button, Alert, Container, Row, Col } from 'react-bootstrap';
 import axios from 'axios';
 
 function CrearGasto() {
     const [successMessage, setSuccessMessage] = useState(null);
     const [datosGastos, setdatosGastos] = useState({
         articulo: '',
-        valor: 0, 
+        motivo_gasto: '',
+        valor: 0,
         fecha: ''
     });
 
@@ -21,13 +22,14 @@ function CrearGasto() {
         e.preventDefault();
         try {
             // const token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-            await axios.post('http://localhost:8000/api/gastos', {...datosGastos});
-            
+            await axios.post('http://localhost:8000/api/gastos', { ...datosGastos });
+
             setSuccessMessage('Gasto creado con éxito'); // Establecer el mensaje de éxito
             // Limpiar los campos después de la creación exitosa
             setdatosGastos({
                 articulo: '',
-                valor: 0, 
+                motivo_gasto: '',
+                valor: 0,
                 fecha: ''
             });
         } catch (error) {
@@ -37,27 +39,40 @@ function CrearGasto() {
     };
 
     return (
-        <Form onSubmit={handleSubmit}>
-            {successMessage && <Alert variant="success">{successMessage}</Alert>}
-            <Form.Group controlId="articulo">
-                <Form.Label>Articulo</Form.Label>
-                <Form.Control type="text" name="articulo" value={datosGastos.articulo} onChange={handleChange} placeholder="articulo" />
-            </Form.Group>
+        <Container>
+            <Form onSubmit={handleSubmit}>
+                <h1>Gastos</h1>
+                <Row>
+                    <Col>
+                        {successMessage && <Alert variant="success">{successMessage}</Alert>}
+                    </Col>
+                </Row>
+                <Row>
+                    <Form.Group as={Col} xs={4} controlId="articulo">
+                        <Form.Label>Articulo</Form.Label>
+                        <Form.Control required type="text" name="articulo" value={datosGastos.articulo} onChange={handleChange} placeholder="Articulo" />
+                    </Form.Group>
 
-            <Form.Group controlId="valor">
-                <Form.Label>Valor</Form.Label>
-                <Form.Control type="number" name="valor" value={datosGastos.valor} onChange={handleChange} placeholder="valor" />
-            </Form.Group>
+                    <Form.Group as={Col} xs={4} controlId="valor">
+                        <Form.Label>Valor</Form.Label>
+                        <Form.Control required type="number" name="valor" value={datosGastos.valor} onChange={handleChange} />
+                    </Form.Group>
 
-            <Form.Group controlId="fecha">
-                <Form.Label>Fecha</Form.Label>
-                <Form.Control type="date" name="fecha" value={datosGastos.fecha} onChange={handleChange} placeholder="fecha" />
-            </Form.Group>
+                    <Form.Group as={Col} xs={4}controlId="formGasto">
+                        <Form.Label>Motivo Gasto</Form.Label>
+                        <Form.Control required as="textarea" rows={3} value={datosGastos.motivo_gasto} onChange={handleChange} placeholder="Motivo Gasto"/>
+                    </Form.Group>
 
-            <Button variant="primary" type="submit">
-                Crear Gasto
-            </Button>
-        </Form>
+                    <Form.Group as={Col} xs={4} controlId="fecha">
+                        <Form.Label>Fecha</Form.Label>
+                        <Form.Control required type="date" name="fecha" value={datosGastos.fecha} onChange={handleChange} placeholder="Fecha" />
+                    </Form.Group>
+                </Row>
+                <Button style={{ marginTop: '10px' }} variant="primary" type="submit">
+                    Crear
+                </Button>
+            </Form>
+        </Container>
     );
 }
 

@@ -1,15 +1,18 @@
 import React, { useState, useEffect } from 'react';
-import { Form, Button, Alert } from 'react-bootstrap';
+import { Form, Button, Alert, Container, Row, Col } from 'react-bootstrap';
 import axios from 'axios';
 
 function CrearEntrada() {
     const [successMessage, setSuccessMessage] = useState(null);
     const [entrada, setEntrada] = useState({
-        id_inventario: '',
+        id_inventario: 0,
         codigo: '',
-        id_producto: '',
-        cantidad: '',
+        id_producto: 0,
+        cantidad: 0,
         fecha: ''
+    });
+    const [stockInventario, setstockInventario] = useState({
+        stock: 0
     });
     const [buscarProducto, setBuscarProducto] = useState('');
     const [productosEncontrados, setProductosEncontrados] = useState([]);
@@ -32,7 +35,7 @@ function CrearEntrada() {
             }
         };
 
-        const fetchInventario = async () => {
+        const fetchInventarioBuscar = async () => {
             try {
                 const response = await axios.get(`http://localhost:8000/api/inventario/buscar`, {
                     params: {
@@ -41,6 +44,8 @@ function CrearEntrada() {
                 });
                 if (response.data.length > 0) {
                     setInventarioEncontrado(response.data[0]);
+                    setstockInventario(response.data[0].stock);
+                    console.log(response.data[0].stock);
                 } else {
                     setInventarioEncontrado(null);
                     setNoResultMessage(`No se encontró ningún inventario con el código ${buscarInventario}`);
@@ -58,7 +63,7 @@ function CrearEntrada() {
         }
 
         if (buscarInventario.trim() !== '') {
-            fetchInventario();
+            fetchInventarioBuscar();
         } else {
             setInventarioEncontrado(null);
             setNoResultMessage('');
@@ -90,7 +95,16 @@ function CrearEntrada() {
                 id_inventario: inventarioEncontrado.id
             };
 
-            await axios.post('http://localhost:8000/api/entrada', entradaData);
+            const response = await axios.post('http://localhost:8000/api/entrada', entradaData);
+
+            // const stockEntrada = response.data.cantidad;
+            const stockFinal = parseInt(stockInventario) + parseInt(response.data.cantidad);
+            const inventarioData = {
+                stock: stockFinal,
+                id: inventarioEncontrado.id
+            };
+            
+            await axios.put(`http://localhost:8000/api/inventario/${inventarioEncontrado.id}`, inventarioData);
 
             setSuccessMessage('Entrada creada con éxito');
             setEntrada({
@@ -110,46 +124,49 @@ function CrearEntrada() {
     };
 
     return (
-        <div>
+        <Container>
             <Form onSubmit={handleSubmit}>
-                {successMessage && <Alert variant="success">{successMessage}</Alert>}
-                {noResultMessage && <Alert variant="warning">{noResultMessage}</Alert>}
-                <Form.Group controlId="buscarProducto">
-                    <Form.Label>Buscar Producto</Form.Label>
-                    <Form.Control type="text" value={buscarProducto} onChange={handleChangeProducto} placeholder="Nombre del Producto" />
-                    <Form.Text className="text-muted">Seleccione un producto de la lista</Form.Text>
-                    <ul>
-                        {productosEncontrados.map(producto => (
-                            <li key={producto.id}>{producto.nombre}</li>
-                        ))}
-                    </ul>
-                </Form.Group>
+                <h1>Entradas</h1>
+                <Row>
+                    <Col>
+                        {successMessage && <Alert variant="success">{successMessage}</Alert>}
+                        {noResultMessage && <Alert variant="warning">{noResultMessage}</Alert>}
+                    </Col>
+                </Row>
+                <Row>
+                    <Form.Group as={Col} xs={4} controlId="buscarProducto">
+                        <Form.Label>Buscar Producto</Form.Label>
+                        <Form.Control required type="text" value={buscarProducto} onChange={handleChangeProducto} placeholder="Nombre Producto" />
+                    </Form.Group>
 
-                <Form.Group controlId="buscarInventario">
-                    <Form.Label>Buscar Inventario</Form.Label>
-                    <Form.Control type="text" name="codigo" value={buscarInventario} onChange={e => setBuscarInventario(e.target.value)} placeholder="Código del Inventario" />
-                </Form.Group>
+                    <Form.Group  as={Col} xs={4} controlId="buscarInventario">
+                        <Form.Label>Buscar Inventario</Form.Label>
+                        <Form.Control required type="text" name="codigo" value={buscarInventario} onChange={e => setBuscarInventario(e.target.value)} placeholder="Código Inventario" />
+                    </Form.Group>
 
-                <Form.Group controlId="codigoEntrada">
+                    <Form.Group as={Col} xs={4} controlId="codigoEntrada">
                     <Form.Label>Código de Entrada</Form.Label>
-                    <Form.Control type="text" name="codigo" value={entrada.codigo} onChange={handleChangeEntrada} placeholder="Código de Entrada" />
+                    <Form.Control required type="text" name="codigo" value={entrada.codigo} onChange={handleChangeEntrada} placeholder="Código Entrada" />
                 </Form.Group>
+                </Row>
 
-                <Form.Group controlId="cantidad">
+                <Row>
+                <Form.Group as={Col} xs={6} controlId="cantidad">
                     <Form.Label>Cantidad</Form.Label>
-                    <Form.Control type="text" name="cantidad" value={entrada.cantidad} onChange={handleChangeEntrada} placeholder="Cantidad" />
+                    <Form.Control required type="number" name="cantidad" value={entrada.cantidad} onChange={handleChangeEntrada} />
                 </Form.Group>
 
-                <Form.Group controlId="fecha">
+                <Form.Group as={Col} xs={6} controlId="fecha">
                     <Form.Label>Fecha</Form.Label>
-                    <Form.Control type="date" name="fecha" value={entrada.fecha} onChange={handleChangeEntrada} placeholder="Fecha" />
+                    <Form.Control required type="date" name="fecha" value={entrada.fecha} onChange={handleChangeEntrada} />
                 </Form.Group>
+                </Row>
 
-                <Button variant="primary" type="submit">
+                <Button style={{ marginTop: '10px'}} variant="primary" type="submit">
                     Crear Entrada
                 </Button>
             </Form>
-        </div>
+        </Container>
     );
 }
 

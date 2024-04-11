@@ -46,6 +46,7 @@ function ListarProductos() {
                         <th>Descripción</th>
                         <th>Peso</th>
                         <th>Fecha</th>
+                        <th>Opciones</th>
                     </tr>
                 </thead>
                 <tbody>

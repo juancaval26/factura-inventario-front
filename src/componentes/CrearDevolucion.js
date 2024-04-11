@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Form, Button, Alert } from 'react-bootstrap';
+import { Form, Button, Alert, Container, Row, Col } from 'react-bootstrap';
 import axios from 'axios';
 
 function CrearDevolucion() {
@@ -78,32 +78,37 @@ function CrearDevolucion() {
     };
 
     return (
-        <Form onSubmit={handleSubmit}>
-            {successMessage && <Alert variant="success">{successMessage}</Alert>}
-            {noResultMessage && <Alert variant="warning">{noResultMessage}</Alert>}
-            <Form.Group controlId="id_venta">
-                <Form.Label>Código de Venta</Form.Label>
-                <div className="input-group">
-                    <Form.Control type="text" name="id_venta" value={buscarVenta} onChange={handleChangeVenta} placeholder="Código de Venta" />
-                </div>
-                {ventaEncontrada &&
-                    <p>venta encontrada código: {ventaEncontrada.codigo}</p>
-                }
-            </Form.Group>
+        <Container>
+            <Form onSubmit={handleSubmit}>
+                <h1>Devolución</h1>
+                <Row>
+                    <Col>
+                    {successMessage && <Alert variant="success">{successMessage}</Alert>}
+                    {noResultMessage && <Alert variant="warning">{noResultMessage}</Alert>}
+                    </Col>
+                </Row>
+                <Row>
+                    <Form.Group as={Col} xs={4} controlId="id_venta">
+                        <Form.Label>Código de Venta</Form.Label>
+                        <Form.Control required type="text" name="id_venta" value={buscarVenta} onChange={handleChangeVenta} placeholder="Código de Venta" />
+                    </Form.Group>
 
-            <Form.Group controlId="fecha">
-                <Form.Label>Fecha</Form.Label>
-                <Form.Control type="date" name="fecha" value={devolucion.fecha} onChange={handleChangeDevolucion} placeholder="Fecha" />
-            </Form.Group>
-
-            <Form.Group controlId="cantidad">
-                <Form.Label>Cantidad</Form.Label>
-                <Form.Control type="text" name="cantidad" value={devolucion.cantidad} onChange={handleChangeDevolucion} placeholder="Cantidad" />
-            </Form.Group>
-            <Button variant="primary" type="submit">
-                Crear Devolución
-            </Button>
-        </Form>
+                    <Form.Group as={Col} xs={6} controlId="fecha">
+                        <Form.Label>Fecha</Form.Label>
+                        <Form.Control required type="date" name="fecha" value={devolucion.fecha} onChange={handleChangeDevolucion} placeholder="Fecha" />
+                    </Form.Group>
+                </Row>
+                <Row>
+                <Form.Group as={Col} xs={4} controlId="cantidad">
+                    <Form.Label>Cantidad</Form.Label>
+                    <Form.Control required type="text" name="cantidad" value={devolucion.cantidad} onChange={handleChangeDevolucion} placeholder="Cantidad" />
+                </Form.Group>
+                </Row>
+                <Button style={{ marginTop: '10px'}} variant="primary" type="submit">
+                    Crear
+                </Button>
+            </Form>
+        </Container>
     );
 }
 

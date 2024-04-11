@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Form, Button, Alert } from 'react-bootstrap';
+import { Form, Button, Alert, Container, Row, Col } from 'react-bootstrap';
 import axios from 'axios';
 
 function CrearProducto() {
@@ -37,32 +37,41 @@ function CrearProducto() {
     };
 
     return (
-        <Form onSubmit={handleSubmit}>
-            {successMessage && <Alert variant="success">{successMessage}</Alert>}
-            <Form.Group controlId="nombre">
-                <Form.Label>Nombre</Form.Label>
-                <Form.Control type="text" name="nombre" value={productoData.nombre} onChange={handleChange} placeholder="Nombre" />
-            </Form.Group>
+        <Container>
+            <Form onSubmit={handleSubmit}>
+                <h1>Producto</h1>
+                <Row>
+                    <Col>
+                        {successMessage && <Alert variant="success">{successMessage}</Alert>}
+                    </Col>
+                </Row>
+                <Row>
+                <Form.Group as={Col} xs={6} controlId="nombre">
+                    <Form.Label>Nombre</Form.Label>
+                    <Form.Control required type="text" name="nombre" value={productoData.nombre} onChange={handleChange} placeholder="Nombre" />
+                </Form.Group>
 
-            <Form.Group controlId="descripcion">
-                <Form.Label>Descripción</Form.Label>
-                <Form.Control type="text" name="descripcion" value={productoData.descripcion} onChange={handleChange} placeholder="Descripción" />
-            </Form.Group>
+                <Form.Group as={Col} xs={6} controlId="descripcion">
+                    <Form.Label>Descripción</Form.Label>
+                    <Form.Control as="textarea" rows={3} name="descripcion" value={productoData.descripcion} onChange={handleChange} placeholder="Descripción" />
+                </Form.Group>
+                </Row>
+                <Row>
+                <Form.Group as={Col} xs={6} controlId="peso">
+                    <Form.Label>Peso</Form.Label>
+                    <Form.Control required type="texto" name="peso" value={productoData.peso} onChange={handleChange} placeholder="Peso" />
+                </Form.Group>
 
-            <Form.Group controlId="peso">
-                <Form.Label>Peso</Form.Label>
-                <Form.Control type="texto" name="peso" value={productoData.peso} onChange={handleChange} placeholder="Peso" />
-            </Form.Group>
-
-            <Form.Group controlId="fecha">
-                <Form.Label>Fecha Ingreso</Form.Label>
-                <Form.Control type="date" name="fecha" value={productoData.fecha} onChange={handleChange} placeholder="Fecha" />
-            </Form.Group>
-
-            <Button variant="primary" type="submit">
-                Crear Producto
-            </Button>
-        </Form>
+                <Form.Group as={Col} xs={6} controlId="fecha">
+                    <Form.Label>Fecha Ingreso</Form.Label>
+                    <Form.Control required type="date" name="fecha" value={productoData.fecha} onChange={handleChange} />
+                </Form.Group>
+                </Row>
+                <Button style={{ marginTop: '10px'}} variant="primary" type="submit">
+                    Crear
+                </Button>
+            </Form>
+        </Container>
     );
 }
 

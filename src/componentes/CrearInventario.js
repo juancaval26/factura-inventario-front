@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Form, Button, Alert } from 'react-bootstrap';
+import { Form, Button, Alert, Container, Row, Col } from 'react-bootstrap';
 import axios from 'axios';
 
 function CrearInventario() {
@@ -33,27 +33,41 @@ function CrearInventario() {
     };
 
     return (
-        <Form onSubmit={handleSubmit}>
-            {successMessage && <Alert variant="success">{successMessage}</Alert>}
-            <Form.Group controlId="codigo">
-                <Form.Label>Código</Form.Label>
-                <Form.Control type="number" name="codigo" value={datosInventario.codigo} onChange={handleChange}/>
-            </Form.Group>
+        <Container>
+            <Form onSubmit={handleSubmit}>
+                <h1>Inventario</h1>
+                <Row>
+                    <Col>
+                        {successMessage && <Alert variant="success">{successMessage}</Alert>}
+                    </Col>
+                </Row>
+                <Row>
+                <Form.Group as={Col} xs={3} controlId="codigo">
+                    <Form.Label>Código</Form.Label>
+                    <Form.Control required type="number" name="codigo" value={datosInventario.codigo} onChange={handleChange}/>
+                </Form.Group>
 
-            <Form.Group controlId="producto">
-                <Form.Label>Producto</Form.Label>
-                <Form.Control type="text" name="producto" value={datosInventario.producto} onChange={handleChange} placeholder="producto" />
-            </Form.Group>
+                <Form.Group as={Col} xs={3} controlId="producto">
+                    <Form.Label>Producto</Form.Label>
+                    <Form.Control required type="text" name="producto" value={datosInventario.producto} onChange={handleChange} placeholder="producto" />
+                </Form.Group>
 
-            <Form.Group controlId="stock">
-                <Form.Label>Stock</Form.Label>
-                <Form.Control type="text" name="stock" value={datosInventario.stock} onChange={handleChange}/>
-            </Form.Group>
+                <Form.Group as={Col} xs={3} controlId="stock">
+                    <Form.Label>Stock</Form.Label>
+                    <Form.Control required type="number" name="stock" value={datosInventario.stock} onChange={handleChange}/>
+                </Form.Group>
 
-            <Button variant="primary" type="submit">
-                Crear Inventario
-            </Button>
-        </Form>
+                <Form.Group as={Col} xs={3} controlId="fecha">
+                    <Form.Label>Fecha</Form.Label>
+                    <Form.Control required type="date" name="fecha" value={datosInventario.fecha} onChange={handleChange}/>
+                </Form.Group>
+                </Row>
+
+                <Button style={{ marginTop: '10px'}} variant="primary" type="submit">
+                    Crear
+                </Button>
+            </Form>
+        </Container>
     );
 }
 

@@ -7,21 +7,20 @@ import { Link } from 'react-router-dom';
 import CrearCliente from './CrearCliente';
 import CrearDevolucion from './CrearDevolucion';
 import CrearEntrada from './CrearEntrada';
-import CrearFactura from './CrearFactura';
 import CrearGasto from './CrearGasto';
 import CrearInventario from './CrearInventario';
 import CrearProducto from './CrearProducto';
-import CrearSalida from './CrearSalida';
-import Crearventa from './CrearVenta';
+import CrearVenta from './CrearVenta';
 import ListarClientes from './ListarClientes';
 import ListarDevoluciones from './ListarDevoluciones';
 import ListarEntradas from './ListarEntradas';
-import ListarFacturas from './ListarFacturas';
 import ListarGastos from './ListarGastos';
 import ListarInventario from './ListarInventario';
 import ListarProductos from './ListarProductos';
-import Listarsalidas from './ListarSalida';
-import Listarventas from './ListarVentas';
+import ListarSalidas from './ListarSalida';
+import ListarVentas from './ListarVentas';
+import GenerarPagos from './GenerarPagos';
+import logo from '../img/logo.jpeg';
 
 function Inicio() {
     const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -46,27 +45,26 @@ function Inicio() {
         'crearCliente': <CrearCliente />,
         'crearDevolucion': <CrearDevolucion />,
         'crearEntrada': <CrearEntrada />,
-        'crearFactura': <CrearFactura />,
         'crearGasto': <CrearGasto />,
         'crearInventario': <CrearInventario />,
         'crearProducto': <CrearProducto />,
-        'crearSalida': <CrearSalida />,
-        'crearVenta': <Crearventa />,
+        'crearVenta': <CrearVenta />,
         'listarClientes': <ListarClientes />,
         'listarDevoluciones': <ListarDevoluciones />,
         'listarEntradas': <ListarEntradas />,
-        'listarFacturas': <ListarFacturas />,
         'listarGastos': <ListarGastos />,
         'listarInventario': <ListarInventario />,
         'listarProductos': <ListarProductos />,
-        'listarSalidas': <Listarsalidas />,
-        'listarVentas': <Listarventas />,
+        'listarSalidas': <ListarSalidas />,
+        'listarVentas': <ListarVentas />,
+        'generarPagos': <GenerarPagos />,
+
     };
 
     return (
         <div className={`wrapper d-flex align-items-stretch ${sidebarOpen ? 'toggled' : ''}`}>
             <nav id="sidebar" className={sidebarOpen ? 'active' : ''}>
-                <div className="p-4 pt-5">
+                <div className="p-4 pt-4">
                     <ul className="list-unstyled components mb-5">
                         <li className="active">
                             <a href="#" onClick={() => handleSubMenuCollapse('clientes')}>
@@ -91,7 +89,7 @@ function Inicio() {
                                 GASTOS
                             </a>
                             <ul id="gastos" className="collapse list-unstyled">
-                                <Link onClick={() => handleComponentSelection('crearGastos')}>Crear</Link>
+                                <Link onClick={() => handleComponentSelection('crearGasto')}>Crear</Link>
                                 <Link onClick={() => handleComponentSelection('listarGastos')}>Listar</Link>
                             </ul>
                         </li>
@@ -114,21 +112,14 @@ function Inicio() {
                             </ul>
                         </li>
                         <li>
-                            <a href="#" onClick={() => handleSubMenuCollapse('facturas')}>
-                                FACTURAS
-                            </a>
-                            <ul id="facturas" className="collapse list-unstyled">
-                                <Link onClick={() => handleComponentSelection('crearFactura')}>Crear</Link>
-                                <Link onClick={() => handleComponentSelection('listarFacturas')}>Listar</Link>
-                            </ul>
-                        </li>
-                        <li>
                             <a href="#" onClick={() => handleSubMenuCollapse('ventas')}>
                                 VENTAS
                             </a>
                             <ul id="ventas" className="collapse list-unstyled">
                                 <Link onClick={() => handleComponentSelection('crearVenta')}>Crear</Link>
                                 <Link onClick={() => handleComponentSelection('listarVentas')}>Listar</Link>
+                                <Link onClick={() => handleComponentSelection('generarPagos')}>pagos</Link>
+
                             </ul>
                         </li>
                         <li>
@@ -145,7 +136,6 @@ function Inicio() {
                                 SALIDAS
                             </a>
                             <ul id="salidas" className="collapse list-unstyled">
-                                <Link onClick={() => handleComponentSelection('crearSalida')}>Crear</Link>
                                 <Link onClick={() => handleComponentSelection('listarSalidas')}>Listar</Link>
                             </ul>
                         </li>
@@ -153,14 +143,14 @@ function Inicio() {
                 </div>
             </nav>
 
-            <div id="content" className="p-4 p-md-5">
+            <div id="content" className="p-md-2">
                 <nav className="navbar navbar-expand-lg navbar-light bg-light">
-                    <div className="container-fluid">
                         <button type="button" id="sidebarCollapse" className="btn btn-primary" onClick={toggleSidebar}>
                             <FontAwesomeIcon icon={faBars} />
                         </button>
+                    <div className="container-fluid">
                         <a className="navbar-brand" href="#">
-                            <img src="" alt="ke-rico" width="" height="30" className="d-inline-block align-top" />
+                            <img src={logo} alt="ke-rico" style={{ borderRadius: '50%', width: '50%', margin: '20   px' }} className="d-inline-block align-top" />
                         </a>
                         <div className="collapse navbar-collapse" id="navbarSupportedContent">
                             <ul className="navbar-nav ml-auto mb-2 mb-lg-0">

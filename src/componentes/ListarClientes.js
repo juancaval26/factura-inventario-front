@@ -18,15 +18,24 @@ function ListarClientes() {
         try {
             let url = `http://localhost:8000/api/clientes?page=${currentPage}`;
             if (searchTerm) {
-                url = `http://localhost:8000/api/clientes/buscar?nombre=${searchTerm}`;
+                const response = await axios.get(`http://localhost:8000/api/clientes/buscar`, {
+                    params: {
+                        nombre: searchTerm
+                    }
+                });
+                setClientes(response.data);
+                setLastPage(response.data.last_page);
+            } else {
+                // Si no hay un término de búsqueda, obtener todos los clientes
+                const response = await axios.get(url);
+                setClientes(response.data.data);
+                setLastPage(response.data.last_page);
             }
-            const response = await axios.get(url);
-            setClientes(response.data.data);
-            setLastPage(response.data.last_page);
         } catch (error) {
             console.error('Error fetching data:', error);
         }
     };
+    
 
 
     const handleOpenModal = (cliente) => {
@@ -52,10 +61,6 @@ function ListarClientes() {
         fetchClientes();
     };
 
-    const handlePageChange = (page) => {
-        setCurrentPage(page);
-    };
-
     const handleNextPage = () => {
         setCurrentPage(currentPage + 1);
     };
@@ -71,13 +76,7 @@ function ListarClientes() {
                 Anterior
             </Button>
         );
-        for (let i = 1; i <= lastPage; i++) {
-            buttons.push(
-                <Button key={i} variant={currentPage === i ? 'primary' : 'secondary'} onClick={() => handlePageChange(i)}>
-                    {i}
-                </Button>
-            );
-        }
+
         buttons.push(
             <Button key="next" style={{ margin: '5px' }} variant="secondary" disabled={currentPage === lastPage} onClick={handleNextPage}>
                 Siguiente
@@ -86,15 +85,16 @@ function ListarClientes() {
         return buttons;
     };
 
+    const handleChangeCliente = e => {
+        const value = e.target.value || '';
+        setSearchTerm(value);
+    };
 
     return (
         <div>
             <h1>Clientes: {renderPaginationButtons()}
-
-                <div style={{ marginBottom: '10px' }}>
-                    <input type="text" value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} placeholder="Buscar cliente por nombre, NIT o negocio" />
-                    <Button variant="primary" onClick={handleSearch}>Buscar</Button>
-                </div>
+                <input type="search" value={searchTerm} onChange={handleChangeCliente} placeholder="nombre" style={{ maxWidth: '250px', maxHeight: '50px' }}/>
+                <Button variant="primary" onClick={handleSearch} style={{ marginLeft: '10px' }}>Buscar</Button>
             </h1>
             <Table bordered hover>
                 <thead>

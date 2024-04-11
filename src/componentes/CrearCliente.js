@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { Form, Button, Alert, Container } from 'react-bootstrap';
+import { Form, Button, Alert, Container, Row, Col } from 'react-bootstrap';
 import axios from 'axios';
+import Config from './Config';
 
 function CrearCliente() {
     const [successMessage, setSuccessMessage] = useState(null);
@@ -10,7 +11,7 @@ function CrearCliente() {
         direccion: '',
         telefono: '',
         nit: '',
-        estado: '',
+        estado: 'A',
         correo: ''
     });
 
@@ -24,10 +25,9 @@ function CrearCliente() {
     const handleSubmit = async e => {
         e.preventDefault();
         try {
-            // const token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-            await axios.post('http://localhost:8000/api/clientes', {...datosCliente});
+            await axios.post(`${config}`, {...datosCliente});
             
-            setSuccessMessage('Cliente creado con éxito'); // Establecer el mensaje de éxito
+            setSuccessMessage('Cliente creado con éxito');
             // Limpiar los campos después de la creación exitosa
             setDatosCliente({
                 nombre: '',
@@ -45,50 +45,57 @@ function CrearCliente() {
     };
 
     return (
-        <Container>
-            <h1>Clientes</h1>
-        <Form onSubmit={handleSubmit}>
-            {successMessage && <Alert variant="success">{successMessage}</Alert>}
-            <Form.Group controlId="nombre">
-                <Form.Label>Nombre</Form.Label>
-                <Form.Control type="text" name="nombre" value={datosCliente.nombre} onChange={handleChange} placeholder="nombre" />
-            </Form.Group>
-
-            <Form.Group controlId="negocio">
-                <Form.Label>Negocio</Form.Label>
-                <Form.Control type="text" name="negocio" value={datosCliente.negocio} onChange={handleChange} placeholder="Negocio" />
-            </Form.Group>
-
-            <Form.Group controlId="direccion">
-                <Form.Label>Dirección</Form.Label>
-                <Form.Control type="text" name="direccion" value={datosCliente.direccion} onChange={handleChange} placeholder="Dirección" />
-            </Form.Group>
-
-            <Form.Group controlId="telefono">
-                <Form.Label>Teléfono</Form.Label>
-                <Form.Control type="text" name="telefono" value={datosCliente.telefono} onChange={handleChange} placeholder="Teléfono" />
-            </Form.Group>
-
-            <Form.Group controlId="nit">
-                <Form.Label>NIT</Form.Label>
-                <Form.Control type="text" name="nit" value={datosCliente.nit} onChange={handleChange} placeholder="NIT" />
-            </Form.Group>
-
-            <Form.Group controlId="estado">
-                <Form.Label>Estado</Form.Label>
-                <Form.Control type="text" name="estado" value={datosCliente.estado} onChange={handleChange} placeholder="Estado" />
-            </Form.Group>
-
-            <Form.Group controlId="correo">
-                <Form.Label>Correo</Form.Label>
-                <Form.Control type="email" name="correo" value={datosCliente.correo} onChange={handleChange} placeholder="Correo electrónico"/>
-            </Form.Group>
-
-            <Button variant="primary" type="submit">
-                Crear Cliente
-            </Button>
-        </Form>
-        </Container>
+            <Container>
+                <Form onSubmit={handleSubmit}>
+                    <h1>Clientes</h1>
+                    <Row>
+                        <Col>
+                            {successMessage && <Alert variant="success">{successMessage}</Alert>}
+                        </Col>
+                    </Row>
+                    <Row>
+                        <Form.Group as={Col} controlId="nombre">
+                            <Form.Label>Nombre</Form.Label>
+                            <Form.Control required type="text" name="nombre" value={datosCliente.nombre} onChange={handleChange} placeholder="Nombre" />
+                        </Form.Group>
+    
+                        <Form.Group as={Col} controlId="negocio">
+                            <Form.Label>Negocio</Form.Label>
+                            <Form.Control required type="text" name="negocio" value={datosCliente.negocio} onChange={handleChange} placeholder="Negocio" />
+                        </Form.Group>
+                    </Row>
+                    <Row>
+                        <Form.Group as={Col} controlId="direccion">
+                            <Form.Label>Dirección</Form.Label>
+                            <Form.Control required type="text" name="direccion" value={datosCliente.direccion} onChange={handleChange} placeholder="Dirección" />
+                        </Form.Group>
+    
+                        <Form.Group as={Col} controlId="telefono">
+                            <Form.Label>Teléfono</Form.Label>
+                            <Form.Control required type="text" name="telefono" value={datosCliente.telefono} onChange={handleChange} placeholder="Teléfono" />
+                        </Form.Group>
+                    </Row>
+                    <Row>
+                        <Form.Group as={Col} controlId="nit">
+                            <Form.Label>NIT</Form.Label>
+                            <Form.Control type="text" name="nit" value={datosCliente.nit} onChange={handleChange} placeholder="NIT" />
+                        </Form.Group>
+                    </Row>
+                    <Row>
+                        <Form.Group as={Col} xs={6} controlId="correo">
+                            <Form.Label>Correo</Form.Label>
+                            <Form.Control type="email" name="correo" value={datosCliente.correo} onChange={handleChange} placeholder="Correo" />
+                        </Form.Group>
+                    </Row>
+                    <Row>
+                        <Col>
+                            <Button style={{ marginTop: '10px'}} variant="primary" type="submit">
+                                Crear
+                            </Button>
+                        </Col>
+                    </Row>
+                </Form>
+            </Container>
     );
 }
 

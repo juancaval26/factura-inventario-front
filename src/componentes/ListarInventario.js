@@ -45,6 +45,7 @@ function ListarInventario() {
                         <th>Código</th>
                         <th>Nom.Producto</th>
                         <th>Stock</th>
+                        <th>Opciones</th>
                     </tr>
                 </thead>
                 <tbody>
