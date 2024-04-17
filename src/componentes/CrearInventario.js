@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Form, Button, Alert, Container, Row, Col } from 'react-bootstrap';
 import axios from 'axios';
+import Config from './Config';
 
 function CrearInventario() {
     const [successMessage, setSuccessMessage] = useState(null);
@@ -18,8 +19,7 @@ function CrearInventario() {
     const handleSubmit = async e => {
         e.preventDefault();
         try {
-            // const token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-            await axios.post('http://localhost:8000/api/inventario', {...datosInventario});
+            await axios.post(`${Config}/api/inventario`, {...datosInventario});
             
             setSuccessMessage('Inventario creado con éxito'); // Establecer el mensaje de éxito
             // Limpiar los campos después de la creación exitosa

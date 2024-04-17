@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Button, Modal, Form, Table } from 'react-bootstrap';
+import Config from './Config';
 
 function ListarProductos() {
     const [productos, setProductos] = useState([]);
@@ -8,7 +9,7 @@ function ListarProductos() {
     const [productoEditado, setProductoEditado] = useState(null);
 
     useEffect(() => {
-        axios.get('http://localhost:8000/api/productos')
+        axios.get(`${Config}/api/productos`)
             .then(response => {
                 setProductos(response.data);
             })
@@ -24,12 +25,12 @@ function ListarProductos() {
 
     const handleGuardarEdicion = async () => {
         try {
-            await axios.put(`http://localhost:8000/api/productos/${productoEditado.id}`, productoEditado);
+            await axios.put(`${Config}/api/productos/${productoEditado.id}`, productoEditado);
             setShowModal(false);
             console.log('Cambios guardados exitosamente.');
 
             // Actualizar datos locales después de guardar cambios
-            const response = await axios.get('http://localhost:8000/api/productos');
+            const response = await axios.get(`${Config}/api/productos`);
             setProductos(response.data);
         } catch (error) {
             console.error('Error al guardar cambios:', error);

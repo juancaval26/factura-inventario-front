@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Form, Button, Alert, Container, Row, Col } from 'react-bootstrap';
 import axios from 'axios';
+import Config from './Config';
+
 
 function CrearDevolucion() {
     const [successMessage, setSuccessMessage] = useState(null);
@@ -17,7 +19,7 @@ function CrearDevolucion() {
         if (buscarVenta.trim() !== '') {
             const fetchVenta = async () => {
                 try {
-                    const response = await axios.get(`http://localhost:8000/api/ventas/buscar`, {
+                    const response = await axios.get(`${Config}/api/ventas/buscar`, {
                         params: {
                             codigo: buscarVenta
                         }
@@ -60,7 +62,7 @@ function CrearDevolucion() {
     const handleSubmit = async e => {
         e.preventDefault();
         try {
-            await axios.post('http://localhost:8000/api/devolucion', { ...devolucion });
+            await axios.post(`${Config}/api/devolucion`, { ...devolucion });
 
             setSuccessMessage('Devolución creada con éxito');
             // Limpiar los campos después de la creación exitosa

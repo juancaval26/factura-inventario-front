@@ -59,7 +59,7 @@ function Crearventa() {
     const handleChangeCliente = async e => {
         setBuscarCliente(e.target.value);
         try {
-            const response = await axios.get('http://localhost:8000/api/clientes/buscar', {
+            const response = await axios.get(`${Config}/api/clientes/buscar`, {
                 params: {
                     nombre: e.target.value
                 }

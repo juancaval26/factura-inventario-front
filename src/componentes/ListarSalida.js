@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Table } from 'react-bootstrap';
+import Config from './Config';
 
 function Listarsalidas() {
     const [salidas, setsalidas] = useState([]);
 
     useEffect(() => {
-        axios.get('http://localhost:8000/api/salida')
+        axios.get(`${Config}/api/salida`)
             .then(response => {
                 setsalidas(response.data);
             })

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Button, Modal, Form, Table } from 'react-bootstrap';
+import Config from './Config';
 
 function ListarClientes() {
     const [clientes, setClientes] = useState([]);
@@ -16,9 +17,9 @@ function ListarClientes() {
 
     const fetchClientes = async () => {
         try {
-            let url = `http://localhost:8000/api/clientes?page=${currentPage}`;
+            let url = `${Config}/api/clientes?page=${currentPage}`;
             if (searchTerm) {
-                const response = await axios.get(`http://localhost:8000/api/clientes/buscar`, {
+                const response = await axios.get(`${Config}/api/clientes/buscar`, {
                     params: {
                         nombre: searchTerm
                     }
@@ -45,7 +46,7 @@ function ListarClientes() {
 
     const handleGuardarEdicion = async () => {
         try {
-            await axios.put(`http://localhost:8000/api/clientes/${clienteEditado.id}`, clienteEditado);
+            await axios.put(`${Config}/api/clientes/${clienteEditado.id}`, clienteEditado);
             setShowModal(false);
             console.log('Cambios guardados exitosamente.');
 

@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Table } from 'react-bootstrap';
+import Config from './Config';
 
 function ListarDevoluciones() {
     const [devoluciones, setDevoluciones] = useState([]);
 
     useEffect(() => {
-        axios.get('http://localhost:8000/api/devolucion')
+        axios.get(`${Config}/api/devolucion`)
             .then(response => {
                 setDevoluciones(response.data);
             })

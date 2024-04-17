@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Button, Modal, Form, Table, Col, Row } from 'react-bootstrap';
+import Config from './Config';
 
 function ListarGastos() {
     const [gastos, setgastos] = useState([]);
@@ -21,7 +22,7 @@ function ListarGastos() {
 
     const fetchGastos = async () => {
         try {
-                const response = await axios.get(`http://localhost:8000/api/gastos?page=${currentPage}`);
+                const response = await axios.get(`${Config}/api/gastos?page=${currentPage}`);
                 setgastos(response.data.data);
                 setLastPage(response.data.last_page);
 
@@ -33,7 +34,7 @@ function ListarGastos() {
     useEffect(() => {
         const fetchGastoTotal = async () => {
             try {
-                const response = await axios.get('http://localhost:8000/api/gastos/total', {
+                const response = await axios.get(`${Config}/api/gastos/total`, {
                     params: {
                         fechaInicial: fechaInicial,
                         fechaFinal: fechaFinal
@@ -64,12 +65,12 @@ function ListarGastos() {
 
     const handleGuardarEdicion = async () => {
         try {
-            await axios.put(`http://localhost:8000/api/gastos/${gastoEditado.id}`, gastoEditado);
+            await axios.put(`${Config}/api/gastos/${gastoEditado.id}`, gastoEditado);
             setShowModal(false);
             console.log('Cambios guardados exitosamente.');
 
             // Actualizar datos locales después de guardar cambios
-            const response = await axios.get('http://localhost:8000/api/gastos');
+            const response = await axios.get(`${Config}/api/gastos`);
             setgastos(response.data);
         } catch (error) {
             console.error('Error al guardar cambios:', error);
@@ -103,7 +104,7 @@ function ListarGastos() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await axios.get('http://localhost:8000/api/pagos/total', {
+            const response = await axios.get(`${Config}/api/pagos/total`, {
                 params: {
                     fechaInicial: fechaInicial,
                     fechaFinal: fechaFinal,

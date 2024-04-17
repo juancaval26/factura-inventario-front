@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Button, Modal, Form, Table } from 'react-bootstrap';
+import Config from './Config';
 
 function ListarInventario() {
     const [inventario, setinventario] = useState([]);
@@ -8,7 +9,7 @@ function ListarInventario() {
     const [inventarioEditado, setinventarioEditado] = useState(null);
 
     useEffect(() => {
-        axios.get('http://localhost:8000/api/inventario')
+        axios.get(`${Config}/api/inventario`)
             .then(response => {
                 setinventario(response.data);
             })
@@ -24,12 +25,12 @@ function ListarInventario() {
 
     const handleGuardarEdicion = async () => {
         try {
-            await axios.put(`http://localhost:8000/api/inventario/${inventarioEditado.id}`, inventarioEditado);
+            await axios.put(`${Config}/api/inventario/${inventarioEditado.id}`, inventarioEditado);
             setShowModal(false);
             console.log('Cambios guardados exitosamente.');
 
             // Actualizar datos locales después de guardar cambios
-            const response = await axios.get('http://localhost:8000/api/inventario');
+            const response = await axios.get(`${Config}/api/inventario`);
             setinventario(response.data);
         } catch (error) {
             console.error('Error al guardar cambios:', error);

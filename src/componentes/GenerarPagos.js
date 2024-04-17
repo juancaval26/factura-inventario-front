@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Table, Button, Form, Row, Col, Modal } from 'react-bootstrap';
+import Config from './Config';
 
 function GenerarPagos() {
     const [ventas, setVentas] = useState([]);
@@ -15,7 +16,7 @@ function GenerarPagos() {
     useEffect(() => {
         const fetchVentas = async () => {
             try {
-                const response = await axios.get('http://localhost:8000/api/ventas/total', {
+                const response = await axios.get(`${Config}/api/ventas/total`, {
                     params: {
                         fechaInicial: fechaInicial,
                         fechaFinal: fechaFinal
@@ -33,7 +34,7 @@ function GenerarPagos() {
     useEffect(() => {
         const fetchPagos = async () => {
             try {
-                const response = await axios.get('http://localhost:8000/api/ventas/pago', {
+                const response = await axios.get(`${Config}/api/ventas/pago`, {
                     params: {
                         fechaInicial: fechaInicial,
                         fechaFinal: fechaFinal
@@ -51,7 +52,7 @@ function GenerarPagos() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await axios.get('http://localhost:8000/api/ventas/total', {
+            const response = await axios.get(`${Config}/api/ventas/total`, {
                 params: {
                     fechaInicial: fechaInicial,
                     fechaFinal: fechaFinal,
@@ -63,7 +64,7 @@ function GenerarPagos() {
         }
 
         try {
-            const totalPagar = await axios.get('http://localhost:8000/api/ventas/pago', {
+            const totalPagar = await axios.get(`${Config}/api/ventas/pago`, {
                 params: {
                     fechaInicial: fechaInicial,
                     fechaFinal: fechaFinal

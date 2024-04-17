@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Table, Button, Form, Modal } from 'react-bootstrap';
+import Config from './Config';
 
 function Listarventas() {
     const [ventas, setventas] = useState([]);
@@ -8,7 +9,7 @@ function Listarventas() {
     const [ventaEditada, setventaEditada] = useState(null);
 
     useEffect(() => {
-        axios.get('http://localhost:8000/api/ventas')
+        axios.get(`${Config}/api/ventas`)
             .then(response => {
                 setventas(response.data);
             })
@@ -24,12 +25,12 @@ function Listarventas() {
 
     const handleGuardarEdicion = async () => {
         try {
-            await axios.put(`http://localhost:8000/api/ventas/${ventaEditada.id}`, ventaEditada);
+            await axios.put(`${Config}/api/ventas/${ventaEditada.id}`, ventaEditada);
             setShowModal(false);
             console.log('Cambios guardados exitosamente.');
 
             // Actualizar datos locales después de guardar cambios
-            const response = await axios.get('http://localhost:8000/api/ventas');
+            const response = await axios.get(`${Config}/api/ventas`);
             setventas(response.data);
         } catch (error) {
             console.error('Error al guardar cambios:', error);

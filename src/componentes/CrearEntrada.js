@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Form, Button, Alert, Container, Row, Col } from 'react-bootstrap';
 import axios from 'axios';
+import Config from './Config';
 
 function CrearEntrada() {
     const [successMessage, setSuccessMessage] = useState(null);
@@ -23,7 +24,7 @@ function CrearEntrada() {
     useEffect(() => {
         const fetchProductos = async () => {
             try {
-                const response = await axios.get(`http://localhost:8000/api/productos/buscar`, {
+                const response = await axios.get(`${Config}/api/productos/buscar`, {
                     params: {
                         nombre: buscarProducto
                     }
@@ -37,7 +38,7 @@ function CrearEntrada() {
 
         const fetchInventarioBuscar = async () => {
             try {
-                const response = await axios.get(`http://localhost:8000/api/inventario/buscar`, {
+                const response = await axios.get(`${Config}/api/inventario/buscar`, {
                     params: {
                         codigo: buscarInventario
                     }
@@ -95,7 +96,7 @@ function CrearEntrada() {
                 id_inventario: inventarioEncontrado.id
             };
 
-            const response = await axios.post('http://localhost:8000/api/entrada', entradaData);
+            const response = await axios.post(`${Config}/api/entrada`, entradaData);
 
             // const stockEntrada = response.data.cantidad;
             const stockFinal = parseInt(stockInventario) + parseInt(response.data.cantidad);
@@ -104,7 +105,7 @@ function CrearEntrada() {
                 id: inventarioEncontrado.id
             };
             
-            await axios.put(`http://localhost:8000/api/inventario/${inventarioEncontrado.id}`, inventarioData);
+            await axios.put(`${Config}/api/inventario/${inventarioEncontrado.id}`, inventarioData);
 
             setSuccessMessage('Entrada creada con éxito');
             setEntrada({

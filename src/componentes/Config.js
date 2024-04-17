@@ -1,9 +1,4 @@
-import React from "react";
-
 // config.js
-const Config = {
-  Url: process.env.REACT_APP_API_URL || 'dominio',
-
-};
+const Config = process.env.REACT_APP_API_URL || 'http://localhost:8000';
 
 export default Config;

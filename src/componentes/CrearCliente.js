@@ -25,7 +25,7 @@ function CrearCliente() {
     const handleSubmit = async e => {
         e.preventDefault();
         try {
-            await axios.post(`${config}`, {...datosCliente});
+            await axios.post(`${Config}`, {...datosCliente});
             
             setSuccessMessage('Cliente creado con éxito');
             // Limpiar los campos después de la creación exitosa

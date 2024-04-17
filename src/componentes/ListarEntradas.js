@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Table, Button, Modal, Form } from 'react-bootstrap';
 import axios from 'axios';
+import Config from './Config';
 
 function ListarEntradas() {
     const [entradas, setEntradas] = useState([]);
@@ -10,7 +11,7 @@ function ListarEntradas() {
     useEffect(() => {
         const fetchEntradas = async () => {
             try {
-                const response = await axios.get('http://localhost:8000/api/entrada');
+                const response = await axios.get(`${Config}/api/entrada`);
                 setEntradas(response.data);
             } catch (error) {
                 console.error('Error al obtener las entradas:', error);
@@ -27,7 +28,7 @@ function ListarEntradas() {
 
     const handleGuardarEdicion = async () => {
         try {
-            await axios.put(`http://localhost:8000/api/entrada/${entradaEditada.id}`, {
+            await axios.put(`${Config}/api/entrada/${entradaEditada.id}`, {
                 codigo: entradaEditada.codigo,
                 cantidad: entradaEditada.cantidad,
                 fecha: entradaEditada.fecha
@@ -36,7 +37,7 @@ function ListarEntradas() {
             console.log('Cambios guardados exitosamente.');
 
             // Actualizar datos locales después de guardar cambios
-            const response = await axios.get('http://localhost:8000/api/entrada');
+            const response = await axios.get(`${Config}/api/entrada`);
             setEntradas(response.data);
         } catch (error) {
             console.error('Error al guardar cambios:', error);

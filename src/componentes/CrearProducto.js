@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Form, Button, Alert, Container, Row, Col } from 'react-bootstrap';
 import axios from 'axios';
+import Config from './Config';
 
 function CrearProducto() {
     const [successMessage, setSuccessMessage] = useState(null);
@@ -21,7 +22,7 @@ function CrearProducto() {
     const handleSubmit = async e => {
         e.preventDefault();
         try {
-            await axios.post('http://localhost:8000/api/productos', { ...productoData });
+            await axios.post(`${Config}/api/productos`, { ...productoData });
             
             setSuccessMessage('Producto creado con éxito');
             setProductoData({
