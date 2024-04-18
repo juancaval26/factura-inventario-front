@@ -135,7 +135,7 @@ function Crearventa() {
             const ventasParaEnviar = selectedProducts.map((producto, index) => {
                 // Generar un ID de venta único para cada venta
                 const idVenta = ultimoIdVenta + index + 1; // Se podría utilizar otro método más preciso para generar IDs únicos
-    
+
                 return {
                     ...producto,
                     id_venta: idVenta,
@@ -143,21 +143,30 @@ function Crearventa() {
                 };
             });
 
-        // Guardar todas las ventas en la base de datos
-        await axios.post(`${Config}/api/ventas`, ventasParaEnviar);
+            // Guardar todas las ventas en la base de datos
+            await axios.post(`${Config}/api/ventas`, ventasParaEnviar);
 
-        // Enviar todas las ventas a la vez
-        await Promise.all(ventasParaEnviar.map(async venta => {
-            const datosSalida = [{
-                fecha: venta.fecha,
-                id_inventario: parseInt(venta.id_producto),
-                id_venta: (venta.id_venta),
-                motivo: 'venta',
-                codigo: venta.codigo
-            }];
-            await axios.post(`${Config}/api/salida`, datosSalida);
-        }));
-        alert('Ventas creadas exitosamente');
+            // Enviar todas las ventas a la vez
+            await Promise.all(ventasParaEnviar.map(async venta => {
+                const datosSalida = [{
+                    fecha: venta.fecha,
+                    id_inventario: parseInt(venta.id_producto),
+                    id_venta: (venta.id_venta),
+                    motivo: 'venta',
+                    codigo: venta.codigo
+                }];
+                await axios.post(`${Config}/api/salida`, datosSalida);
+
+                // Crear objeto con los datos específicos para la API de facturas
+                const datosFactura = [{
+                    id_venta: venta.id_venta,
+                    codigo: venta.codigo
+                }];
+
+                await axios.post(`${Config}/api/facturas`, datosFactura);
+
+            }));
+            alert('Ventas creadas exitosamente');
 
             // Restablecer el estado después de crear las ventas
             setventa({
