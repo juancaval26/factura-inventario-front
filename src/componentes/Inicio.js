@@ -21,6 +21,7 @@ import ListarSalidas from './ListarSalida';
 import ListarVentas from './ListarVentas';
 import GenerarPagos from './GenerarPagos';
 import logo from '../img/logo.jpeg';
+import ListarFacturas from './ListarFacturas';
 
 function Inicio() {
     const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -57,7 +58,9 @@ function Inicio() {
         'listarProductos': <ListarProductos />,
         'listarSalidas': <ListarSalidas />,
         'listarVentas': <ListarVentas />,
+        'listarFacturas': <ListarFacturas />,
         'generarPagos': <GenerarPagos />,
+
 
     };
 
@@ -118,7 +121,15 @@ function Inicio() {
                             <ul id="ventas" className="collapse list-unstyled">
                                 <Link onClick={() => handleComponentSelection('crearVenta')}>Crear</Link>
                                 <Link onClick={() => handleComponentSelection('listarVentas')}>Listar</Link>
-                                <Link onClick={() => handleComponentSelection('generarPagos')}>pagos</Link>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="#" onClick={() => handleSubMenuCollapse('facturas')}>
+                                FACTURAS
+                            </a>
+                            <ul id="facturas" className="collapse list-unstyled">
+                                <Link onClick={() => handleComponentSelection('listarFacturas')}>Listar</Link>
+                                {/* <Link onClick={() => handleComponentSelection('generarPagos')}>Detalles</Link> */}
 
                             </ul>
                         </li>
@@ -137,6 +148,14 @@ function Inicio() {
                             </a>
                             <ul id="salidas" className="collapse list-unstyled">
                                 <Link onClick={() => handleComponentSelection('listarSalidas')}>Listar</Link>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="#" onClick={() => handleSubMenuCollapse('pagos')}>
+                                PAGOS
+                            </a>
+                            <ul id="pagos" className="collapse list-unstyled">
+                            <Link onClick={() => handleComponentSelection('generarPagos')}>pagos</Link>
                             </ul>
                         </li>
                     </ul>

@@ -39,7 +39,7 @@ function CrearCliente() {
                 correo: ''
             });
         } catch (error) {
-            console.error('Error al crear cliente:', error);
+            alert('Error al crear cliente:', error);
             // Resto del código...
         }
     };

@@ -31,7 +31,7 @@ function CrearEntrada() {
                 });
                 setProductosEncontrados(response.data);
             } catch (error) {
-                console.error('Error al buscar producto:', error);
+                alert('Error al buscar producto:', error);
                 setProductosEncontrados([]);
             }
         };
@@ -120,7 +120,7 @@ function CrearEntrada() {
             setInventarioEncontrado(null);
             setNoResultMessage('');
         } catch (error) {
-            console.error('Error al crear entrada:', error);
+            alert('Error al crear entrada:', error);
         }
     };
 

@@ -7,30 +7,30 @@ function ListarClientes() {
     const [clientes, setClientes] = useState([]);
     const [showModal, setShowModal] = useState(false);
     const [clienteEditado, setClienteEditado] = useState(null);
-    const [currentPage, setCurrentPage] = useState(1);
-    const [lastPage, setLastPage] = useState(1);
-    const [searchTerm, setSearchTerm] = useState('');
+    const [pagActual, setpagActual] = useState(1);
+    const [sigPagina, setsigPagina] = useState(1);
+    const [buscaTermino, setbuscaTermino] = useState('');
 
     useEffect(() => {
         fetchClientes();
-    }, [currentPage, searchTerm]);
+    }, [pagActual, buscaTermino]);
 
     const fetchClientes = async () => {
         try {
-            let url = `${Config}/api/clientes?page=${currentPage}`;
-            if (searchTerm) {
+            let url = `${Config}/api/clientes?page=${pagActual}`;
+            if (buscaTermino) {
                 const response = await axios.get(`${Config}/api/clientes/buscar`, {
                     params: {
-                        nombre: searchTerm
+                        nombre: buscaTermino
                     }
                 });
                 setClientes(response.data);
-                setLastPage(response.data.last_page);
+                setsigPagina(response.data.last_page);
             } else {
                 // Si no hay un término de búsqueda, obtener todos los clientes
                 const response = await axios.get(url);
                 setClientes(response.data.data);
-                setLastPage(response.data.last_page);
+                setsigPagina(response.data.last_page);
             }
         } catch (error) {
             console.error('Error fetching data:', error);
@@ -58,28 +58,28 @@ function ListarClientes() {
     };
 
     const handleSearch = () => {
-        setCurrentPage(1); // Reset page number when performing a new search
+        setpagActual(1); // Reset page number when performing a new search
         fetchClientes();
     };
 
     const handleNextPage = () => {
-        setCurrentPage(currentPage + 1);
+        setpagActual(pagActual + 1);
     };
 
     const handlePrevPage = () => {
-        setCurrentPage(currentPage - 1);
+        setpagActual(pagActual - 1);
     };
 
     const renderPaginationButtons = () => {
         const buttons = [];
         buttons.push(
-            <Button key="prev" variant="secondary" disabled={currentPage === 1} onClick={handlePrevPage}>
+            <Button key="prev" variant="secondary" disabled={pagActual === 1} onClick={handlePrevPage}>
                 Anterior
             </Button>
         );
 
         buttons.push(
-            <Button key="next" style={{ margin: '5px' }} variant="secondary" disabled={currentPage === lastPage} onClick={handleNextPage}>
+            <Button key="next" style={{ margin: '5px' }} variant="secondary" disabled={pagActual === sigPagina} onClick={handleNextPage}>
                 Siguiente
             </Button>
         );
@@ -88,13 +88,13 @@ function ListarClientes() {
 
     const handleChangeCliente = e => {
         const value = e.target.value || '';
-        setSearchTerm(value);
+        setbuscaTermino(value);
     };
 
     return (
         <div>
             <h1>Clientes: {renderPaginationButtons()}
-                <input type="search" value={searchTerm} onChange={handleChangeCliente} placeholder="nombre" style={{ maxWidth: '250px', maxHeight: '50px' }}/>
+                <input type="search" value={buscaTermino} onChange={handleChangeCliente} placeholder="nombre" style={{ maxWidth: '250px', maxHeight: '50px' }}/>
                 <Button variant="primary" onClick={handleSearch} style={{ marginLeft: '10px' }}>Buscar</Button>
             </h1>
             <Table bordered hover>

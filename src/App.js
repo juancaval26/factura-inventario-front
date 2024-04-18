@@ -17,6 +17,7 @@ import ListarSalida from './componentes/ListarSalida';
 import CrearVenta from './componentes/CrearVenta';
 import ListarVentas from './componentes/ListarVentas';
 import GenerarPagos from './componentes/GenerarPagos';
+import ListarFacturas from './componentes/ListarFacturas';
 
 function App() {
   return (
@@ -38,6 +39,7 @@ function App() {
           <Route  path="/listarsalidas" element={<ListarSalida/>} />
           <Route  path="/crearventa" element={<CrearVenta/>} />
           <Route  path="/listarventas" element={<ListarVentas/>} />
+          <Route  path="/listarfacturas" element={<ListarFacturas/>} />
           <Route  path="/generarpagos" element={<GenerarPagos/>} />
       </Routes>
     </Router>

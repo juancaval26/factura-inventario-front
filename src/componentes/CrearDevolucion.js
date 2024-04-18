@@ -35,7 +35,7 @@ function CrearDevolucion() {
                         setNoResultMessage(`No se encontraron ventas con el código ${buscarVenta}`);
                     }
                 } catch (error) {
-                    console.error('Error al buscar venta:', error);
+                    alert('Error al buscar venta:', error);
                     setVentaEncontrada(null);
                 }
             };
@@ -74,7 +74,7 @@ function CrearDevolucion() {
             setVentaEncontrada(null);
             setBuscarVenta('');
         } catch (error) {
-            console.error('Error al crear devolución:', error);
+            alert('Error al crear devolución:', error);
             // Manejo de errores...
         }
     };

@@ -30,7 +30,7 @@ function Crearventa() {
                 const response = await axios.get(`${Config}/api/productos`);
                 setProductos(response.data);
             } catch (error) {
-                console.error('Error al obtener la lista de productos:', error);
+                alert('Error al obtener la lista de productos:', error);
             }
         };
 
@@ -38,9 +38,8 @@ function Crearventa() {
             try {
                 const response = await axios.get(`${Config}/api/ventas/ultimoId`);
                 setUltimoIdVenta(response.data[0].id);
-                console.log(response.data[0].id);
             } catch (error) {
-                console.error('Error al obtener el último ID de venta:', error);
+                alert('Error al obtener el último ID de venta:', error);
             }
         };
 
@@ -66,7 +65,7 @@ function Crearventa() {
             });
             setClienteEncontrado(response.data);
         } catch (error) {
-            console.error('Error al buscar cliente:', error);
+            alert('Error al buscar cliente:', error);
             setClienteEncontrado([]);
         }
     };
@@ -81,21 +80,19 @@ function Crearventa() {
     const handleAddProduct = async () => {
         const selectedProduct = productos.find(producto => producto.id === parseInt(venta.id_producto));
         if (selectedProduct) {
-            console.log("selectedProduct",selectedProduct.id);
             const stock = await fetchStock(selectedProduct.id);
             if (venta.cantidad > stock) {
                 alert('La cantidad seleccionada supera el stock disponible');
                 return;
             }
-    
+
             // Restar la cantidad seleccionada del stock del producto
             const nuevoStock = stock - venta.cantidad;
-            console.log("nuevoStock",selectedProduct.id);
             await actualizarStock(selectedProduct.id, nuevoStock);
-            console.log(nuevoStock);
-    
+
             const ventaToAdd = {
                 ...venta,
+                id_venta: ultimoIdVenta, // Usar el último ID de venta
                 id_cliente: clienteEncontrado[0].id,
                 nombre: selectedProduct.nombre,
             };
@@ -111,10 +108,9 @@ function Crearventa() {
                     id_producto: id_producto
                 }
             });
-            console.log(response.data[0].stock);
             return response.data[0].stock;
         } catch (error) {
-            console.error('Error al obtener el stock del producto:', error);
+            alert('Error al obtener el stock del producto:', error);
             return 0;
         }
     };
@@ -123,45 +119,62 @@ function Crearventa() {
         try {
             await axios.put(`${Config}/api/inventario/${id_producto}`, { stock: nuevoStock });
         } catch (error) {
-            console.error('Error al actualizar el stock del producto:', error);
+            alert('Error al actualizar el stock del producto:', error);
         }
     };
-    
-    
 
     const handleSubmit = async () => {
         try {
             // Validar que se haya seleccionado al menos un producto
             if (selectedProducts.length === 0) {
-                console.error('Debe seleccionar al menos un producto');
+                alert('Debe seleccionar al menos un producto');
                 return;
             }
-
             // Incrementar el último ID de venta para obtener el nuevo código
             const nuevoCodigoVenta = ultimoIdVenta + 1;
-            // Añadir el código de venta a cada producto seleccionado
-            const ventasConCodigo = selectedProducts.map(producto => ({
-                ...producto,
-                codigo: nuevoCodigoVenta
-            }));
-            // Llamar a la API para guardar la venta
-            await axios.post(`${Config}/api/ventas`, ventasConCodigo);
+            const ventasParaEnviar = selectedProducts.map((producto, index) => {
+                // Generar un ID de venta único para cada venta
+                const idVenta = ultimoIdVenta + index + 1; // Se podría utilizar otro método más preciso para generar IDs únicos
+    
+                return {
+                    ...producto,
+                    id_venta: idVenta,
+                    codigo: nuevoCodigoVenta
+                };
+            });
 
-            setSuccessMessage('Ventas creadas exitosamente');
+        // Guardar todas las ventas en la base de datos
+        await axios.post(`${Config}/api/ventas`, ventasParaEnviar);
+
+        // Enviar todas las ventas a la vez
+        await Promise.all(ventasParaEnviar.map(async venta => {
+            const datosSalida = [{
+                fecha: venta.fecha,
+                id_inventario: parseInt(venta.id_producto),
+                id_venta: (venta.id_venta),
+                motivo: 'venta',
+                codigo: venta.codigo
+            }];
+            await axios.post(`${Config}/api/salida`, datosSalida);
+        }));
+        alert('Ventas creadas exitosamente');
+
             // Restablecer el estado después de crear las ventas
             setventa({
                 id_cliente: 0,
-                vendedor: '',
+                id_producto: 0,
+                cantidad: 0,
                 codigo: 0,
-                fecha: '',
+                precio: 0,
+                vendedor: '',
+                fecha: ''
             });
             setBuscarCliente('');
             setSelectedProducts([]);
         } catch (error) {
-            console.error('Error al crear ventas:', error);
+            alert('Error al crear ventas:', error);
         }
     };
-
 
     return (
         <Container>
