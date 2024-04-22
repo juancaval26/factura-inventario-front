@@ -1,5 +1,6 @@
-import './App.css'; 
-import { BrowserRouter as Router, Route, Routes, } from 'react-router-dom';
+import React, { useEffect, useState } from "react";
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { Navigate } from 'react-router-dom'; // Importa Navigate
 import CrearCliente from './componentes/CrearCliente';
 import ListarClientes from './componentes/ListarClientes';
 import CrearGasto from './componentes/CrearGasto';
@@ -18,8 +19,19 @@ import CrearVenta from './componentes/CrearVenta';
 import ListarVentas from './componentes/ListarVentas';
 import GenerarPagos from './componentes/GenerarPagos';
 import ListarFacturas from './componentes/ListarFacturas';
+import Login from './componentes/Login';
+import CrearRemision from './componentes/CrearRemision';
+import ListarRemisiones from './componentes/ListarRemisiones';
 
 function App() {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  
+  useEffect(() => {
+    // Verificar si el usuario está autenticado al cargar la aplicación
+    const userLoggedIn = localStorage.getItem('isLoggedIn');
+    setIsLoggedIn(userLoggedIn == 'true');
+  }, []);
+  
   return (
     <Router>
       <Routes>
@@ -41,6 +53,9 @@ function App() {
           <Route  path="/listarventas" element={<ListarVentas/>} />
           <Route  path="/listarfacturas" element={<ListarFacturas/>} />
           <Route  path="/generarpagos" element={<GenerarPagos/>} />
+          <Route  path="/crearremision" element={<CrearRemision/>} />
+          <Route  path="/listarremisiones" element={<ListarRemisiones/>} />
+
       </Routes>
     </Router>
   );

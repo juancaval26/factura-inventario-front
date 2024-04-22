@@ -1,5 +1,8 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import { Button, Container, Form } from 'react-bootstrap';
+import logo from '../img/logo.jpeg';
+import Config from "./Config";
 
 const Login = () => {
     const [email, setEmail] = useState('');
@@ -10,30 +13,41 @@ const Login = () => {
         e.preventDefault();
 
         try {
-            const response = await axios.post('/api/login', { email, password });
-            // Manejar la respuesta del servidor (por ejemplo, redireccionar al usuario a una página después de iniciar sesión correctamente)
+            const response = await axios.post(`${Config}/api/login`, { email, password });
+            // Verificar si la respuesta indica una autenticación exitosa
+            if (response.data.success) {
+                // Guardar el estado de autenticación en localStorage
+                localStorage.setItem('isLoggedIn', 'true');
+                // Redirigir al usuario a la página principal
+                window.location.href = '/';
+            } else {
+                setError('Credenciales incorrectas. Por favor, inténtalo de nuevo.');
+            }
         } catch (error) {
-            setError('Credenciales incorrectas. Por favor, inténtalo de nuevo.');
-            // Manejar errores (por ejemplo, mostrar un mensaje de error al usuario)
+            setError('Error al iniciar sesión. Por favor, inténtalo de nuevo.');
         }
     }
 
     return (
-        <div>
-            <h2>Iniciar Sesión</h2>
-            {error && <div className="alert alert-danger">{error}</div>}
-            <form onSubmit={handleLogin}>
-                <div className="form-group">
-                    <label htmlFor="email">Correo Electrónico</label>
-                    <input type="email" className="form-control" id="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
+        <Container>
+            <div className="d-flex justify-content-center align-items-center" style={{ height: '100vh' }}>
+                <div className="card p-4" style={{ maxWidth: '400px', width: '100%',  justifyContent: 'center', display: 'flex', alignItems:'center'}}>
+                    <img src={logo} alt="ke-rico" style={{ borderRadius: '50%', width: '20%' }} className="d-inline-block align-top" />
+                    {error && <div className="alert alert-danger">{error}</div>}
+                    <Form onSubmit={handleLogin} style={{  marginTop: '10px' }}>
+                        <Form.Group controlId="email">
+                            <Form.Label>Correo</Form.Label>
+                            <Form.Control placeholder='Correo' type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
+                        </Form.Group>
+                        <Form.Group controlId="password">
+                            <Form.Label>Contraseña</Form.Label>
+                            <Form.Control placeholder='Contraseña' type="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
+                        </Form.Group>
+                        <Button variant="primary" style={{ marginTop: '10px' }} type="submit" block>Ingresar</Button>
+                    </Form>
                 </div>
-                <div className="form-group">
-                    <label htmlFor="password">Contraseña</label>
-                    <input type="password" className="form-control" id="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
-                </div>
-                <button type="submit" className="btn btn-primary">Iniciar Sesión</button>
-            </form>
-        </div>
+            </div>
+        </Container>
     );
 }
 

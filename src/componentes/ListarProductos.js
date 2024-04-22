@@ -8,6 +8,7 @@ function ListarProductos() {
     const [showModal, setShowModal] = useState(false);
     const [productoEditado, setProductoEditado] = useState(null);
 
+    //sin buscador
     useEffect(() => {
         axios.get(`${Config}/api/productos`)
             .then(response => {

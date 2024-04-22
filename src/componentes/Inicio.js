@@ -22,25 +22,13 @@ import ListarVentas from './ListarVentas';
 import GenerarPagos from './GenerarPagos';
 import logo from '../img/logo.jpeg';
 import ListarFacturas from './ListarFacturas';
+import Config from "./Config";
+import axios from 'axios';
+import CrearRemision from './CrearRemision';
+import ListarRemisiones from './ListarRemisiones';
+import { Button, Container, Form } from 'react-bootstrap';
 
 function Inicio() {
-    const [sidebarOpen, setSidebarOpen] = useState(false);
-    const [activeComponent, setActiveComponent] = useState(null);
-
-    const toggleSidebar = () => {
-        setSidebarOpen(!sidebarOpen);
-    };
-
-    // Función para manejar el colapso de los submenús
-    const handleSubMenuCollapse = (id) => {
-        $(`#${id}`).toggleClass('collapse');
-    };
-
-    // Función para manejar la selección del componente a mostrar
-    const handleComponentSelection = (component) => {
-        setActiveComponent(component);
-    };
-
     // Mapa de nombres de componentes a sus componentes correspondientes
     const componentMap = {
         'crearCliente': <CrearCliente />,
@@ -60,15 +48,47 @@ function Inicio() {
         'listarVentas': <ListarVentas />,
         'listarFacturas': <ListarFacturas />,
         'generarPagos': <GenerarPagos />,
-
+        'crearRemision': <CrearRemision />,
+        'listarRemisiones': <ListarRemisiones />,
 
     };
+    const [sidebarOpen, setSidebarOpen] = useState(false);
+    const [activeComponent, setActiveComponent] = useState(null);
 
+    const toggleSidebar = () => {
+        setSidebarOpen(!sidebarOpen);
+    };
+
+    // Función para manejar el colapso de los submenús
+    const handleSubMenuCollapse = (id) => {
+        $(`#${id}`).toggleClass('collapse');
+    };
+
+    // Función para manejar la selección del componente a mostrar
+    const handleComponentSelection = (component) => {
+        setActiveComponent(component);
+    };
+
+    const handleLogout = () => {
+        axios.post(`${Config}/api/logout`)
+            .then(response => {
+                // Manejar la respuesta del servidor después de cerrar sesión
+                window.location.href = '/login'; // Redirigir al usuario a la página de inicio de sesión
+            })
+            .catch(error => {
+                // Manejar errores si la solicitud de cierre de sesión falla
+                alert('Error al cerrar sesión:', error);
+
+            });
+    };
     return (
         <div className={`wrapper d-flex align-items-stretch ${sidebarOpen ? 'toggled' : ''}`}>
             <nav id="sidebar" className={sidebarOpen ? 'active' : ''}>
                 <div className="p-4 pt-4">
                     <ul className="list-unstyled components mb-5">
+                        <a className="navbar-brand" href="#">
+                            <img src={logo} alt="ke-rico" style={{ borderRadius: '10px', width: '50%' }} className="d-inline-block align-top" />
+                        </a>
                         <li className="active">
                             <a href="#" onClick={() => handleSubMenuCollapse('clientes')}>
                                 CLIENTES
@@ -129,8 +149,16 @@ function Inicio() {
                             </a>
                             <ul id="facturas" className="collapse list-unstyled">
                                 <Link onClick={() => handleComponentSelection('listarFacturas')}>Listar</Link>
-                                {/* <Link onClick={() => handleComponentSelection('generarPagos')}>Detalles</Link> */}
 
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="#" onClick={() => handleSubMenuCollapse('remision')}>
+                                REMISIONES
+                            </a>
+                            <ul id="remision" className="collapse list-unstyled">
+                                <Link onClick={() => handleComponentSelection('crearRemision')}>Crear</Link>
+                                <Link onClick={() => handleComponentSelection('listarRemisiones')}>Listar</Link>
                             </ul>
                         </li>
                         <li>
@@ -155,39 +183,22 @@ function Inicio() {
                                 PAGOS
                             </a>
                             <ul id="pagos" className="collapse list-unstyled">
-                            <Link onClick={() => handleComponentSelection('generarPagos')}>pagos</Link>
+                                <Link onClick={() => handleComponentSelection('generarPagos')}>pagos</Link>
                             </ul>
                         </li>
                     </ul>
                 </div>
             </nav>
 
-            <div id="content" className="p-md-2">
+            <div id="content" className="" style={{ position: 'relative', 'zIndex': '1000' }}>
                 <nav className="navbar navbar-expand-lg navbar-light bg-light">
-                        <button type="button" id="sidebarCollapse" className="btn btn-primary" onClick={toggleSidebar}>
-                            <FontAwesomeIcon icon={faBars} />
-                        </button>
-                    <div className="container-fluid">
-                        <a className="navbar-brand" href="#">
-                            <img src={logo} alt="ke-rico" style={{ borderRadius: '50%', width: '50%', margin: '20   px' }} className="d-inline-block align-top" />
-                        </a>
-                        <div className="collapse navbar-collapse" id="navbarSupportedContent">
-                            <ul className="navbar-nav ml-auto mb-2 mb-lg-0">
-                                <li className="nav-item">
-                                    <a className="nav-link" href="#">Inicio</a>
-                                </li>
-                                <li className="nav-item">
-                                    <a className="nav-link" href="#">Iniciar Sesión</a>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
+                    <button type="button" id="sidebarCollapse" className="btn btn-primary" onClick={toggleSidebar}>
+                        <FontAwesomeIcon icon={faBars} />
+                    </button>
+                    <button style={{ marginLeft: '5px'}} className='btn btn-danger'><a className="nav-link" onClick={() => handleLogout()}>SALIR</a></button>
                 </nav>
-            <div id="componente">
-                {activeComponent && componentMap[activeComponent]}
-
-            </div>
-                
+                <div id="componente">{activeComponent && componentMap[activeComponent]}
+                </div>
             </div>
         </div>
     );
